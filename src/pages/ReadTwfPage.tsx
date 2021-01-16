@@ -11,10 +11,8 @@ export const ReadTwfPage = () => {
   const onDrop = useCallback((acceptedFiles) => {
     readTwxFileAsJson<Twf>(acceptedFiles[0])
       .then(setTwf)
-    // readFileAsDataURL(acceptedFiles[0]).then(gzipB64ToJson).then(console.log)
-    // Do something with the files
   }, [])
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps } = useDropzone({ onDrop })
   return (
     <Box style={{ flex: 1, overflow: 'auto' }} {...(twf === null ? getRootProps() : {})} >
       <Container style={{ height: '100%', marginBottom: '16px' }}>
