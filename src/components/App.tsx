@@ -13,19 +13,22 @@ function App () {
               同人陣讀檔器
             </Typography>
             <ButtonGroup variant='text' color='inherit'>
-              <Button href={'//gamelet.online'}>
+              <Button href={'//dipsy.me/twmap/'}>
+                舊讀檔器(twf,twm,twr,var,sav)
+              </Button>
+              <Button href={'//gamelet.online/'}>
                 嘎姆擂台
               </Button>
-              <Button href={'//code.gamelet.com'}>
+              <Button href={'//code.gamelet.com/'}>
                 Code.Gamelet
               </Button>
-              <Button href={'//dipsy.me/light-up'}>
+              <Button href={'https://light-up.gamelet.online/'}>
                 光影迷城
               </Button>
-              <Button href={'//dipsy.me/poker99'}>
+              <Button href={'https://poker99.gamelet.online/'}>
                 童話99
               </Button>
-              <Button href={'//dipsy.me/magile'}>
+              <Button href={'https://magile.gamelet.online/'}>
                 魔法飛彈大作戰
               </Button>
             </ButtonGroup>
