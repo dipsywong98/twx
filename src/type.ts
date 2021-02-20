@@ -45,6 +45,9 @@ export interface TwfIni {
   }
 }
 
+/**
+ * Interface of a twf role
+ */
 export interface TwfRo {
   k: string // unique key (?)
   n: string // name of that role
@@ -53,20 +56,30 @@ export interface TwfRo {
 }
 
 /**
+ * Interface of a twf music
+ */
+export interface TwfMusic {
+  n: string // name
+}
+
+/**
  * Interface of a twf event
  */
 export interface TwfEvent {
-  tag: string
-  act: TwfAct[],
+  tag?: string
+  act: TwfAct[]
   uo: number  // order number
   cks: TwfCheck[]
+  repInt?: number // repeat interval
+  rep?: number // repeat count
+  itime?: number // time for first trigger
 }
 
 
 export interface TwfAct {
-
+  type: string
 }
 
 export interface TwfCheck {
-
+  type: string
 }

@@ -13,6 +13,8 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
         id="panel1a-header"
       >
         <Typography>事件 {eventName}</Typography>
+        <div style={{flex: 1}}/>
+        <Typography variant='caption'>{event.tag}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Box>
