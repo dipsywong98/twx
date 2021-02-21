@@ -4,16 +4,13 @@ import { JsonTree } from './JsonTree'
 import { copyToClipboard } from '../utils/copyToClipboard'
 import { download } from '../utils/download'
 
-export const ClickShowRaw: FunctionComponent<{ raw: unknown, defaultShow?: number, name?: string }> = ({
-                                                                                                         raw,
-                                                                                                         defaultShow,
-                                                                                                         name
-                                                                                                       }) => {
+export const ClickShowRaw: FunctionComponent<{ raw: unknown, defaultShow?: number, name?: string }> = (
+  {
+    raw,
+    defaultShow,
+    name
+  }) => {
   const [show, setShow] = useState(defaultShow ?? 0)
-  const selected = {
-    color: `rgba(0, 0, 0, 0.54)`,
-    backgroundColor: `rgba(0, 0, 0, 0.12)`
-  }
   return (
     <>
       <ButtonGroup>
