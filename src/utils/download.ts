@@ -1,4 +1,4 @@
-import pako from 'pako'
+import { twmapInB64Text } from './twmapInB64Text'
 
 export const download = (text: string, filename: string) => {
   const element = document.createElement('a')
@@ -14,8 +14,5 @@ export const download = (text: string, filename: string) => {
 }
 
 export const downloadTwmap = (twmap: unknown, filename: string) => {
-  let str = JSON.stringify(twmap)
-  let zip = pako.gzip(str, {to: 'string'})
-  let b64 = window.btoa(zip)
-  download(b64, filename)
+  download(twmapInB64Text(twmap), filename)
 }

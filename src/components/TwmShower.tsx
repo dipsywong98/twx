@@ -1,15 +1,31 @@
-import React, { FunctionComponent } from 'react'
-import { Box } from '@material-ui/core'
+import React, { FunctionComponent, useState } from 'react'
+import { Box, Button, TextField } from '@material-ui/core'
 import { ClickShowRaw } from './ClickShowRaw'
+import { twmapInB64Text } from '../utils/twmapInB64Text'
+import { copyToClipboard } from '../utils/copyToClipboard'
 
 
 export const TwmShower: FunctionComponent<{ twm: unknown, name: string }> = ({ twm, name }) => {
+  const [copied, setCopied] = useState(false)
+  const handleCopy = () => {
+    copyToClipboard(twmapInB64Text(twm))
+    setCopied(true)
+  }
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
       <Box style={{ margin: '8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
         <Box>
           <ClickShowRaw raw={twm} name={`${name}.twmap`} defaultShow={1}/>
         </Box>
+      </Box>
+      <Button variant='contained' color='primary' onClick={handleCopy}>
+        {copied ? 'COPIED' : 'Copy TWMAP'}
+      </Button>
+      <Box>
+        <TextField multiline value={twmapInB64Text(twm)} InputProps={{
+          readOnly: true,
+        }} fullWidth>
+        </TextField>
       </Box>
       <div style={{height: '24px'}} />
     </Box>

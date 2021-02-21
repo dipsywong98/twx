@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   AppBar,
   Box,
@@ -30,6 +30,15 @@ const lightTheme = createMuiTheme({
 
 function App () {
   const [isDarkMode, setIsDarkMode] = useState(useMediaQuery('(prefers-color-scheme: dark)'))
+  const [reopening, setReopening] = useState(false)
+  const handleOpen = (): void => {
+    setReopening(true)
+  }
+  useEffect(() => {
+    if(reopening) {
+      setReopening(false)
+    }
+  }, [reopening])
   return (
     <MuiThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline/>
@@ -41,8 +50,8 @@ function App () {
                 同人陣讀檔器
               </Typography>
               <ButtonGroup variant='text' color='inherit'>
-                <Button href={'//dipsy.me/twmap/'}>
-                  舊讀檔器(twf,twm,twr,var,sav)
+                <Button onClick={handleOpen}>
+                  開另一個檔案
                 </Button>
                 <Button href={'//gamelet.online/'}>
                   嘎姆擂台
@@ -65,7 +74,7 @@ function App () {
               </ButtonGroup>
             </Toolbar>
           </AppBar>
-          <ReadStuffPage />
+          {!reopening && <ReadStuffPage/>}
         </Box>
       </HashRouter>
     </MuiThemeProvider>
