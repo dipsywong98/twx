@@ -19,8 +19,8 @@ export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) =
           <Grid item>mission name: {inf.n}</Grid>
           <Grid item>mission description:</Grid>
           <Grid style={{maxWidth: '100%'}}>
-            {inf.dp.split(/[\n\r]+/g).map(str => (
-              <div style={{lineBreak: 'auto', maxWidth: '100%'}}>{str}</div>
+            {inf.dp.split(/[\n\r]+/g).map((str, k) => (
+              <div key={k} style={{lineBreak: 'auto', maxWidth: '100%'}}>{str}</div>
             ))}
           </Grid>
           <Grid item>mission goal: {inf.go}</Grid>

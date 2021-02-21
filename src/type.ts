@@ -73,6 +73,8 @@ export interface TwfEvent {
   repInt?: number // repeat interval
   rep?: number // repeat count
   itime?: number // time for first trigger
+  delay?: number
+  recInt?: number
 }
 
 

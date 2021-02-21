@@ -2,6 +2,7 @@ import React from 'react'
 import { AppBar, Box, Button, ButtonGroup, Toolbar, Typography } from '@material-ui/core'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import { ReadTwfPage } from '../pages/ReadTwfPage'
+import './App.css'
 
 function App () {
   return (

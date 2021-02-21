@@ -18,9 +18,9 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
     Object.entries(rest).forEach(([key, value]) => {
       if (key.startsWith('ro')) {
         roles.push([key, value as TwfRo])
-      } else if(key.startsWith('music')) {
+      } else if (key.startsWith('music')) {
         musics.push([key, value as TwfMusic])
-      }else {
+      } else {
         const event: TwfEvent = value as TwfEvent
         allEvents.push([key.replace('evt_', ''), event])
         event.tag?.split(',').forEach(t => tags.add(t))
@@ -41,7 +41,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
   const [filterTag, setFilterTag] = useState('')
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
-      <Box style={{margin: '8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline'}}>
+      <Box style={{ margin: '8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
         <Box>
           <ClickShowRaw raw={twf} name={twf.inf.n}/>
         </Box>
@@ -63,7 +63,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
       <JsonShower json={roles} name={`${roles.length} roles`}/>
       <JsonShower json={Object.fromEntries(musics)} name={`${musics.length} musics`}/>
       {Object.entries(events).filter(([_, e]) => filterTag === '' || e.tag?.includes(filterTag)).map(([name, content]) => (
-        <EventShower event={content} eventName={name}/>
+        <EventShower key={name} event={content} eventName={name}/>
       ))}
     </Box>
   )

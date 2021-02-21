@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.MuiAccordionSummary-content, .Mui-expanded {
+  align-items: baseline;
+}
