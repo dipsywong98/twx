@@ -50,6 +50,21 @@ const readTwxFileAsJson: <T>(file: File) => Promise<T> = (file: File) => (
     }))
     .then(JSON.parse)
 )
+
+export const readTwmapFileAsJson: <T>(file: File) => Promise<T> = (file: File) => (
+  readFileAsText(file)
+    .then((e) => {
+      var t = window.atob(e)
+        , n = t.length
+        , r = new Uint8Array(new ArrayBuffer(n))
+      for (var i = 0; i < n; ++i)
+        r[i] = t.charCodeAt(i)
+      return pako.ungzip(r, {
+        to: 'string'
+      })
+    })
+    .then(JSON.parse)
+)
 export default readFile
 
 export {

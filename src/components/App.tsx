@@ -6,16 +6,15 @@ import {
   ButtonGroup,
   createMuiTheme,
   CssBaseline,
-  IconButton,
   MuiThemeProvider,
   Toolbar,
   Typography,
   useMediaQuery
 } from '@material-ui/core'
-import { HashRouter, Route, Switch } from 'react-router-dom'
-import { ReadTwfPage } from '../pages/ReadTwfPage'
+import { HashRouter } from 'react-router-dom'
 import './App.css'
 import { Brightness7 } from '@material-ui/icons'
+import { ReadStuffPage } from '../pages/ReadStuffPage'
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -34,7 +33,7 @@ function App () {
   return (
     <MuiThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline/>
-      <HashRouter>
+      <HashRouter basename={process.env.PUBLIC_URL}>
         <Box flexDirection='column' style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, display: 'flex' }}>
           <AppBar position="static">
             <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -60,17 +59,13 @@ function App () {
                 <Button href={'https://magile.gamelet.online/'}>
                   魔法飛彈大作戰
                 </Button>
-                <IconButton title='Light/Dark Mode' onClick={() => setIsDarkMode(!isDarkMode)}>
+                <Button title='Light/Dark Mode' onClick={() => setIsDarkMode(!isDarkMode)}>
                   <Brightness7 />
-                </IconButton>
+                </Button>
               </ButtonGroup>
             </Toolbar>
           </AppBar>
-          <Switch>
-            <Route path="/">
-              <ReadTwfPage/>
-            </Route>
-          </Switch>
+          <ReadStuffPage />
         </Box>
       </HashRouter>
     </MuiThemeProvider>
