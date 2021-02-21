@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { TwfAct, TwfCheck, TwfEvent } from '../type'
 import { ClickShowRaw } from './ClickShowRaw'
 
-const CheckCell: FunctionComponent<{ check: TwfCheck }> = ({ check }) => {
+const CheckCell: FunctionComponent<{ check: TwfCheck, index: number }> = ({ check, index }) => {
   return (
     <Paper
       className={'cell'}
@@ -13,7 +13,7 @@ const CheckCell: FunctionComponent<{ check: TwfCheck }> = ({ check }) => {
         backgroundColor: '#1b5e20'
       }}>
       <span style={{ whiteSpace: 'nowrap' }}>
-        [檢查] {check.type}{' '}
+        [檢查-{index}] {check.type}{' '}
       </span>
       <span style={{ color: 'hsla(0,0%,100%,.7)' }}>
         {JSON.stringify(check)}
@@ -22,7 +22,7 @@ const CheckCell: FunctionComponent<{ check: TwfCheck }> = ({ check }) => {
   )
 }
 
-const ActionCell: FunctionComponent<{ action: TwfAct }> = ({ action }) => {
+const ActionCell: FunctionComponent<{ action: TwfAct, index: number }> = ({ action, index }) => {
   return (
     <Paper
       className={'cell'}
@@ -31,7 +31,7 @@ const ActionCell: FunctionComponent<{ action: TwfAct }> = ({ action }) => {
         backgroundColor: '#01579b'
       }}>
       <span style={{ whiteSpace: 'nowrap' }}>
-        [動作] {action.type}{' '}
+        [動作-{index}] {action.type}{' '}
       </span>
       <span style={{ color: 'hsla(0,0%,100%,.7)' }}>
         {JSON.stringify(action)}
@@ -96,10 +96,10 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
         <Grid direction='column' container>
           <List>
             {event.cks.map((check, k) => (
-              <CheckCell key={k} check={check}/>
+              <CheckCell key={k} check={check} index={k}/>
             ))}
             {event.act.map((action, k) => (
-              <ActionCell key={k} action={action}/>
+              <ActionCell key={k} action={action} index={k}/>
             ))}
           </List>
           <Box>
