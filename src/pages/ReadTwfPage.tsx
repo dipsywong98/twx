@@ -14,8 +14,8 @@ export const ReadTwfPage = () => {
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
   return (
-    <Box style={{ flex: 1, overflow: 'auto' }} {...(twf === null ? getRootProps() : {})} >
-      <Container style={{ height: '100%', marginBottom: '16px' }}>
+    <Box style={{ flex: 1, overflow: 'auto', paddingBottom: '16px' }} {...(twf === null ? getRootProps() : {})} >
+      <Container style={{ height: '100%' }}>
         <input {...getInputProps()} />
         {
           // isDragActive ?

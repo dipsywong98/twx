@@ -65,6 +65,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
       {Object.entries(events).filter(([_, e]) => filterTag === '' || e.tag?.includes(filterTag)).map(([name, content]) => (
         <EventShower key={name} event={content} eventName={name}/>
       ))}
+      <div style={{height: '24px'}} />
     </Box>
   )
 }

@@ -41,7 +41,7 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
     return strs.join(',')
   },[event, eventName])
   return (
-    <Accordion>
+    <Accordion TransitionProps={{ unmountOnExit: true }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon/>}
         aria-controls="panel1a-content"
