@@ -1,36 +1,42 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, List, Typography } from '@material-ui/core'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, List, Paper, Typography } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { TwfAct, TwfCheck, TwfEvent } from '../type'
 import { ClickShowRaw } from './ClickShowRaw'
 
 const CheckCell: FunctionComponent<{ check: TwfCheck }> = ({ check }) => {
   return (
-    <div
+    <Paper
       className={'cell'}
       style={{
-        backgroundColor: '#070',
+        color: 'white',
+        backgroundColor: '#1b5e20'
       }}>
-      [檢查] {check.type}{' '}
+      <span style={{ whiteSpace: 'nowrap' }}>
+        [檢查] {check.type}{' '}
+      </span>
       <span style={{ color: 'hsla(0,0%,100%,.7)' }}>
         {JSON.stringify(check)}
       </span>
-    </div>
+    </Paper>
   )
 }
 
 const ActionCell: FunctionComponent<{ action: TwfAct }> = ({ action }) => {
   return (
-    <div
+    <Paper
       className={'cell'}
       style={{
-        backgroundColor: '#06b',
+        color: 'white',
+        backgroundColor: '#01579b'
       }}>
-      [動作] {action.type}{' '}
+      <span style={{ whiteSpace: 'nowrap' }}>
+        [動作] {action.type}{' '}
+      </span>
       <span style={{ color: 'hsla(0,0%,100%,.7)' }}>
         {JSON.stringify(action)}
       </span>
-    </div>
+    </Paper>
   )
 }
 
@@ -87,7 +93,7 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
         <Typography component='p' variant='caption' style={{ alignSelf: 'baseline' }}>{event.tag}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid direction='column'>
+        <Grid direction='column' container>
           <List>
             {event.cks.map((check, k) => (
               <CheckCell key={k} check={check}/>
@@ -97,7 +103,7 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
             ))}
           </List>
           <Box>
-            <ClickShowRaw raw={event} defaultShow={1}/>
+            <ClickShowRaw raw={event} defaultShow={0}/>
           </Box>
         </Grid>
       </AccordionDetails>
