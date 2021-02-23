@@ -6,6 +6,7 @@ import { EventShower } from './EventShower'
 import { MissionInfoShower } from './MissionInfoShower'
 import { JsonShower } from './JsonShower'
 import { twfEventAnalysis } from '../utils/twfEventAnalysis'
+import { htmlDecode } from '../utils/htmlDecode'
 
 
 export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
@@ -58,10 +59,14 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
         </FormControl>
       </Box>
       <MissionInfoShower inf={inf}/>
-      <JsonShower json={map} name='map'/>
+      <JsonShower json={map} name={`Map: ${map.n}`}/>
       <JsonShower json={ini} name='spawn point'/>
-      <JsonShower json={roles} name={`${roles.length} roles`}/>
-      <JsonShower json={Object.fromEntries(musics)} name={`${musics.length} musics`}/>
+      <JsonShower json={Object.fromEntries(roles)} name={`${roles.length} roles`}>
+        {roles.map(r => htmlDecode(r[1].n)).join(', ')}
+      </JsonShower>
+      <JsonShower json={Object.fromEntries(musics)} name={`${musics.length} musics`}>
+        {musics.map(m => m[1].n).join(', ')}
+      </JsonShower>
       {Object.entries(events).filter(([_, e]) => filterTag === '' || e.tag?.includes(filterTag)).map(([name, content]) => (
         <EventShower key={name} event={content} eventName={name}/>
       ))}

@@ -3,7 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { ClickShowRaw } from './ClickShowRaw'
 
-export const JsonShower: FunctionComponent<{ json: unknown, name: string }> = ({ json, name }) => {
+export const JsonShower: FunctionComponent<{ json: unknown, name: string }> = ({ json, name, children }) => {
   return (
     <Accordion>
       <AccordionSummary
@@ -13,7 +13,10 @@ export const JsonShower: FunctionComponent<{ json: unknown, name: string }> = ({
       >
         <Typography>{name}</Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails style={{flexDirection: 'column'}}>
+        <Box>
+          {children}
+        </Box>
         <Box>
           <ClickShowRaw raw={json} defaultShow={1}/>
         </Box>

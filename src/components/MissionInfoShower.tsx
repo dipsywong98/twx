@@ -12,7 +12,7 @@ export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) =
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography>Mission Info</Typography>
+        <Typography>Mission Info: {inf.n}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Grid style={{maxWidth: '100%'}} spacing={1} container direction={'column'}>
@@ -30,7 +30,9 @@ export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) =
           <Grid item>author: {inf.sn} ({inf.su})</Grid>
           <Grid item>ability: {inf.ab}</Grid>
           <Grid item>ri: {inf.ri.length > 0 ? inf.ri.join(',') : <i>none</i>}</Grid>
-          <ClickShowRaw raw={inf}/>
+          <Grid item>
+            <ClickShowRaw raw={inf}/>
+          </Grid>
         </Grid>
       </AccordionDetails>
     </Accordion>
