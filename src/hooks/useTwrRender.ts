@@ -1,7 +1,7 @@
 import { Twr } from '../type'
 import React, { useEffect, useRef, useState } from 'react'
 
-export const useTwrRender = (twr: Twr): React.MutableRefObject<HTMLCanvasElement | null> => {
+export const useTwrRender = (twr: Twr, showHead = true, showHands = true, showFoot = true): React.MutableRefObject<HTMLCanvasElement | null> => {
   const view = useRef<null | HTMLCanvasElement>( null )
   const [app, setApp] = useState<unknown>(null)
   useEffect(() => {
@@ -19,9 +19,9 @@ export const useTwrRender = (twr: Twr): React.MutableRefObject<HTMLCanvasElement
     console.log('app?', app)
     if(app!==null) {
       // @ts-ignore
-      window.twrRender.render(app, twr, true, true, true)
+      window.twrRender.render(app, twr, showHead, showHands, showFoot).catch(console.error)
     }
-  }, [app, twr])
+  }, [app, showFoot, showHands, showHead, twr])
   return view
 }
 
