@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo, useState } from 'react'
 import { Twf, TwfEvent, TwfMusic, TwfRo } from '../type'
-import { Box, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@material-ui/core'
 import { ClickShowRaw } from './ClickShowRaw'
 import { EventShower } from './EventShower'
 import { MissionInfoShower } from './MissionInfoShower'
@@ -42,6 +42,9 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
   const [filterTag, setFilterTag] = useState('')
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
+      <Typography variant={'h5'} style={{marginTop: '16px'}}>
+        {twf.inf.n}
+      </Typography>
       <Box style={{ margin: '8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
         <Box>
           <ClickShowRaw raw={twf} name={twf.inf.n}/>

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react'
-import { Box, Button, TextField } from '@material-ui/core'
+import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { ClickShowRaw } from './ClickShowRaw'
 import { twmapInB64Text } from '../utils/twmapInB64Text'
 import { copyToClipboard } from '../utils/copyToClipboard'
@@ -13,6 +13,9 @@ export const TwmShower: FunctionComponent<{ twm: unknown, name: string }> = ({ t
   }
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
+      <Typography variant={'h5'} style={{marginTop: '16px'}}>
+        {name}
+      </Typography>
       <Box style={{ margin: '8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
         <Box>
           <ClickShowRaw raw={twm} name={`${name}.twmap`} defaultShow={1}/>
