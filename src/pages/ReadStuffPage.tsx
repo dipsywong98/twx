@@ -2,17 +2,19 @@ import React, { useCallback, useState } from 'react'
 import { Box, Container, Paper, Typography } from '@material-ui/core'
 import { useDropzone } from 'react-dropzone'
 import { readTwmapFileAsJson, readTwxFileAsJson } from '../utils/readFile'
-import { Twf } from '../type'
+import { Twf, Twr } from '../type'
 import { TwfShower } from '../components/TwfShower'
 import { TwmShower } from '../components/TwmShower'
 import { ClickShowRaw } from '../components/ClickShowRaw'
 import { translateTwm } from '../translators/twmToTwmap/translateTwm'
+import { TwrShower } from '../components/TwrShower'
 
 enum FileType {
   TWF,
   TWM,
   TWMAP,
-  UNKNOWN
+  UNKNOWN,
+  TWR,
 }
 
 export const ReadStuffPage = () => {
@@ -46,6 +48,10 @@ export const ReadStuffPage = () => {
       readTwmapFileAsJson(acceptedFiles[0])
         .then(setFileContentJson)
       setFileType(FileType.TWMAP)
+    } else if (ext === 'twr') {
+      readTwxFileAsJson(acceptedFiles[0])
+        .then(setFileContentJson)
+      setFileType(FileType.TWR)
     } else {
       setFileType(FileType.UNKNOWN)
       // readTwmapFileAsJson(acceptedFiles[0])
@@ -83,10 +89,10 @@ export const ReadStuffPage = () => {
           <Box>
             <Paper style={{ padding: '30px' }}>
               <Typography>
-                Drag and drop a twf/twm/twmap file here, or click to open
+                Drag and drop a twf/twm/twmap/twr file here, or click to open
               </Typography>
               <Typography>
-                拖一個twf/twm/twmap檔至此，或按此打開
+                拖一個twf/twm/twmap/twr檔至此，或按此打開
               </Typography>
               {
                 error !== '' && <Typography color={'error'}>Error: {error}</Typography>
@@ -98,7 +104,9 @@ export const ReadStuffPage = () => {
         {fileContentJson !== null && fileType === FileType.TWM && <TwmShower twm={fileContentJson} name={name}/>}
         {fileContentJson !== null && fileType === FileType.TWMAP &&
         <TwmShower twm={fileContentJson} name={name}/>}
-        {fileContentJson !== null && fileType !== FileType.TWM && fileType !== FileType.TWF && fileType !== FileType.TWMAP &&
+        {fileContentJson !== null && fileType === FileType.TWR &&
+        <TwrShower twr={fileContentJson as Twr} name={name}/>}
+        {fileContentJson !== null && fileType === FileType.UNKNOWN &&
         <ClickShowRaw raw={fileContentJson} name={name} defaultShow={1}/>}
       </Container>
     </Box>

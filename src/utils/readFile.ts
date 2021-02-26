@@ -1,4 +1,5 @@
 import pako from 'pako'
+import { extractJson } from './extractJson'
 
 const readFile = (target: string) => async (file: Blob): Promise<string | ArrayBuffer | null | undefined> => new Promise((resolve) => {
   const reader = new FileReader()
@@ -42,22 +43,17 @@ const readTwxFileAsJson: <T>(file: File) => Promise<T> = (file: File) => (
     .then(bs => pako.inflate(bs))
     .then(buf => new TextDecoder('utf-8').decode(buf))
     .then((s1 => {
-      const start = s1.indexOf('{')
-      const end = s1.lastIndexOf('}')
-      const s2 = s1.slice(start, end + 1).replace(/([,{])(\d+):/g, '$1"$2":')
-      return s2
-      // return JSON.parse(s2)
+      return extractJson(s1.replace(/([,{])(\d+):/g, '$1"$2":'))
     }))
-    .then(JSON.parse)
 )
 
 export const readTwmapFileAsJson: <T>(file: File) => Promise<T> = (file: File) => (
   readFileAsText(file)
     .then((e) => {
-      var t = window.atob(e)
+      const t = window.atob(e)
         , n = t.length
         , r = new Uint8Array(new ArrayBuffer(n))
-      for (var i = 0; i < n; ++i)
+      for (let i = 0; i < n; ++i)
         r[i] = t.charCodeAt(i)
       return pako.ungzip(r, {
         to: 'string'

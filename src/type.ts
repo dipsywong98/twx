@@ -85,3 +85,19 @@ export interface TwfAct {
 export interface TwfCheck {
   type: string
 }
+
+export interface TwrDeco {
+  x: number
+  sx: number
+  y: number
+  sy: number
+  code: string
+  r: number
+}
+
+export interface Twr {
+  hand: number
+  foot: number
+  head: number
+  decos: TwrDeco[]
+}
