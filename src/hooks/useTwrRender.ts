@@ -7,8 +7,7 @@ export const useTwrRender = (twr: Twr, showHead = true, showHands = true, showFo
   useEffect(() => {
     if(view.current !== null) {
       // @ts-ignore
-      const application = new window.PIXI.Application({ width: 200, height: 200, transparent: true, view: view.current })
-      console.log('create pixi', application)
+      const application = new window.PIXI.Application({ width: 200, height: 200, transparent: true, view: view.current, preserveDrawingBuffer: true })
       setApp(application)
       return () => {
         application?.destroy(true)
@@ -16,8 +15,8 @@ export const useTwrRender = (twr: Twr, showHead = true, showHands = true, showFo
     }
   }, [view])
   useEffect(() => {
-    console.log('app?', app)
     if(app!==null) {
+      console.log(twr)
       // @ts-ignore
       window.twrRender.render(app, twr, showHead, showHands, showFoot).catch(console.error)
     }

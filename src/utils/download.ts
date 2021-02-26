@@ -13,6 +13,19 @@ export const download = (text: string, filename: string) => {
   document.body.removeChild(element)
 }
 
+export const downloadDataUrl = (text: string, filename: string) => {
+  const element = document.createElement('a')
+  element.setAttribute('href', text)
+  element.setAttribute('download', filename)
+
+  element.style.display = 'none'
+  document.body.appendChild(element)
+
+  element.click()
+
+  document.body.removeChild(element)
+}
+
 export const downloadTwmap = (twmap: unknown, filename: string) => {
   download(twmapInB64Text(twmap), filename)
 }
