@@ -2,6 +2,8 @@ const url = 'https://dipsy.me/gaf-player'
 class TwrRender {
   actorGaf = null
   decoGaf = null
+  initP = null
+  initDone = false
   loadGaf = async name => {
     return new Promise(resolve => {
       function onConverted(pEvent) {
@@ -13,17 +15,23 @@ class TwrRender {
     })
   }
   init = async () => {
-    this.loadGaf('twactor').then((gaf) => this.actorGaf = gaf).catch(r => {
+    const p1 = this.loadGaf('twactor').then((gaf) => this.actorGaf = gaf).catch(r => {
       console.error('load twactor gg',r)
     })
-    this.loadGaf('decorations').then((gaf) => this.decoGaf = gaf).catch(r => {
+    const p2 = this.loadGaf('decorations').then((gaf) => this.decoGaf = gaf).catch(r => {
       console.error('load decorations gg',r)
     })
+    await Promise.all([p1, p2])
+    this.initDone = true
   }
   constructor() {
-    this.init()
+    this.initP = this.init().then(() => console.log('done'))
   }
-  render(pixiApp, twrJson, showHead, showHands, showFoot) {
+  render = async (pixiApp, twrJson, showHead, showHands, showFoot) => {
+    if(!this.initDone) {
+      pixiApp.stage.addChild(new PIXI.Text('loading'))
+      await this.initP
+    }
     pixiApp.stage.removeChildren()
     const container = new PIXI.Container()
     pixiApp.stage.addChild(container)
