@@ -3,6 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { TwfInf } from '../type'
 import { ClickShowRaw } from './ClickShowRaw'
+import { getCamp } from '../translators/twf/utils/getCamp'
 
 export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) => {
   return (
@@ -12,25 +13,25 @@ export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) =
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography>Mission Info: {inf.n}</Typography>
+        <Typography>任務資訊: {inf.n}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Grid style={{maxWidth: '100%'}} spacing={1} container direction={'column'}>
-          <Grid item>mission name: {inf.n}</Grid>
-          <Grid item>mission description:</Grid>
+          <Grid item>名稱: {inf.n}</Grid>
+          <Grid item>說明:</Grid>
           <Grid style={{maxWidth: '100%'}}>
             {inf.dp.split(/[\n\r]+/g).map((str, k) => (
               <div key={k} style={{lineBreak: 'auto', maxWidth: '100%'}}>{str}</div>
             ))}
           </Grid>
-          <Grid item>mission goal: {inf.go}</Grid>
-          <Grid item>mission fail: {inf.fa}</Grid>
-          <Grid item>camps: {inf.cs.join(',')}</Grid>
-          <Grid item>min players: {inf.minp}</Grid>
-          <Grid item>max players: {inf.maxp}</Grid>
-          <Grid item>max life: {inf.ml ?? 3}</Grid>
-          <Grid item>author: {inf.sn} ({inf.su})</Grid>
-          <Grid item>ability: {inf.ab}</Grid>
+          <Grid item>成功條件: {inf.go}</Grid>
+          <Grid item>失敗條件: {inf.fa}</Grid>
+          <Grid item>可用陣營: {inf.cs.map(getCamp).join(',')}</Grid>
+          <Grid item>最少玩家: {inf.minp}</Grid>
+          <Grid item>最多玩家: {inf.maxp}</Grid>
+          <Grid item>可用生命: {inf.ml ?? 3}</Grid>
+          <Grid item>作者: {inf.sn} ({inf.su})</Grid>
+          <Grid item>技能等級: {inf.ab}</Grid>
           <Grid item>ri: {inf.ri.length > 0 ? inf.ri.join(',') : <i>none</i>}</Grid>
           <Grid item>
             <ClickShowRaw raw={inf}/>

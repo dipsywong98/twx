@@ -92,26 +92,22 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
         </Box>
         {missed.length > 0 && <Box style={{margin: '8px 0'}}>
           <Typography>
-            {missed.length} errors when converting.
-            Contact me with the miss json, cgEvents, twf file, to fix it
-          </Typography>
-          <Typography>
             在轉換時發現{missed.length}個問題。
             可以聯絡我看看可以怎樣修正。記得提供下面的JSON(按copy JSON/download JSON取得)。
             如果可以提供.events, .twf, 和文字檔就最好
           </Typography>
           <Typography>
-            <a href='https://gamelet.online/user/dipsy/board'>contact 聯絡作者</a>
+            <a href='https://gamelet.online/user/dipsy/board'>聯絡作者</a>
           </Typography>
         </Box>}
       </JsonShower>
       <MissionInfoShower inf={inf}/>
-      <JsonShower json={map} name={`Map: ${map.n}`}/>
-      <JsonShower json={ini} name='spawn point'/>
-      <JsonShower json={roles} name={`${Object.keys(roles).length} roles`}>
+      <JsonShower json={map} name={`地圖: ${map.n ?? map.o}`}/>
+      <JsonShower json={ini} name='重生點/初始攝影機位買'/>
+      <JsonShower json={roles} name={`${Object.keys(roles).length}個自訂角色`}>
         {Object.values(roles).map(r => htmlDecode(r.n)).join(', ')}
       </JsonShower>
-      <JsonShower json={musics} name={`${Object.keys(musics).length} musics`}>
+      <JsonShower json={musics} name={`${Object.keys(musics).length}首音樂`}>
         {Object.values(musics).map(m => m.n).join(', ')}
       </JsonShower>
       {Object.entries(events).filter(([_, e]) => filterTag === '' || e.tag?.includes(filterTag)).map(([name, content]) => (
