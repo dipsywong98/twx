@@ -49,7 +49,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
       cgEvents: translateTwfEvents(inf, ini, map, roles, events, musics),
       missed: getMissed()
     }
-  }, [events])
+  }, [events, inf, ini, map, musics, roles])
   const [filterTag, setFilterTag] = useState('')
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
