@@ -21,7 +21,8 @@ export interface TwfMap {
  * Interface to hold twf mission Info
  */
 export interface TwfInf {
-  maxp: 3 // max life
+  ml?: number // max life
+  maxp: number // max player
   go: string // goal
   cs: number[] // camps allowed 0|1|2
   fa: string  // fail
@@ -38,6 +39,7 @@ export interface TwfInf {
  * Interface to hold spawn point Info
  */
 export interface TwfIni {
+  ifus: string  // initial camera coord string
   iclm: {
     "0": string[] // coord strings
     "1": string[] // coord strings
@@ -72,17 +74,18 @@ export interface TwfEvent {
   cks: TwfCheck[]
   repInt?: number // repeat interval
   rep?: number // repeat count
+  repDly?: number // repeat delay
   itime?: number // time for first trigger
   delay?: number
   recInt?: number
 }
 
 
-export interface TwfAct {
+export type TwfAct = Record<string, any> & {
   type: string
 }
 
-export interface TwfCheck {
+export type TwfCheck = Record<string, any> & {
   type: string
 }
 
@@ -101,3 +104,120 @@ export interface Twr {
   head: number
   decos: TwrDeco[]
 }
+
+export type TwmLayer = {
+  map: string | {
+    [floorName: string]: string[]
+  }
+}
+
+export type Twm = {
+  objs: { [objectName: string]: string[] },
+  walls: { [wallName: string]: string[] },
+  mapset: {
+    c: string,
+    v: string
+  }
+  layers: TwmLayer[],
+  size: string
+}
+
+export interface CgAction {
+  type: string
+  data: unknown
+}
+
+export interface CgCheck {
+  type: string
+  data: unknown
+}
+
+export interface CgTrigger {
+  type: string
+  data: unknown
+}
+
+export interface CgEvent {
+  id: string
+  disabled: boolean
+  folder: string
+  startTime: number
+  checkInterval: number
+  repeats: number
+  repeatInterval: number
+  actions: CgAction[]
+  checks: CgCheck[]
+  triggers: CgTrigger[]
+}
+
+export interface CgLocation {
+  x: string
+  y: string
+  range?: string
+}
+
+export interface CgTwilightWarsConfig {
+  title: string
+  serverConfig: {
+    minPlayers: number
+    supportSignin: boolean
+    mustLogin: boolean
+    allowGuest: boolean
+    supportMsgServer: boolean
+    gamezoneCode: string
+    roomType: 'close' | 'open'
+    roomSize: number
+  }
+  runGame: boolean
+  gameStartFadein: string
+  lives: number
+  debugCamp: string
+  releaseCamp: string
+  setInitFocus: boolean
+  initFocus: CgLocation
+  campOptions: {
+    campOpSkydow: boolean
+    campOpRoyal: boolean
+    campOpThird: boolean
+  }
+  map: string
+  maxAbilityLevel: number
+  nextGameEnabled: boolean
+  disableNextGameOnMissionComplete: boolean
+  playDefaultMusic: boolean
+  useDefaultItems: boolean
+  useDefaultCampLocs: boolean
+  skydowLocs: CgLocation[]
+  royalLocs: CgLocation[]
+  thirdLocs: CgLocation[]
+  enabled: boolean
+}
+
+export interface CgEvents {
+  $schema: string
+  config: {
+    stage: {
+      width: number
+      height: number
+      backgroundColor: string
+      resolutionPolicy: string
+      alignHorizontal: string
+      alignVertical: string
+    }
+    preload: {
+      resourcesExclude: []
+      sources: []
+    }
+    configs: {
+      TwilightWarsConfig: CgTwilightWarsConfig
+
+    }
+  }
+  events: CgEvent[]
+}
+
+export type ActionTranslator = (cgActions: CgAction[], action: TwfAct)=> CgAction[]
+export type CheckTranslator = (cgChecks: CgCheck[], check: TwfCheck)=> CgCheck[]
+export type TriggerTranslator = (cgTriggers: CgTrigger[], check: TwfCheck)=> CgTrigger[]
+
+export type Translator = CheckTranslator|TriggerTranslator|ActionTranslator

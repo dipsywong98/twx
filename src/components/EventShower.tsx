@@ -55,6 +55,9 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
     if (event.repInt) {
       strs.push(`重複間隔${event.repInt}毫秒`)
     }
+    if (event.repDly) {
+      strs.push(`重複延遲發動${event.repDly}毫秒`)
+    }
     if (event.recInt) {
       strs.push(`重複檢查間隔${event.recInt}毫秒`)
     }
@@ -67,7 +70,8 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
       'rep',
       'itime',
       'delay',
-      'recInt'
+      'recInt',
+      'repDly'
     ]
     Object.keys(event).forEach(k => {
       if (!knownKeys.includes(k)) {

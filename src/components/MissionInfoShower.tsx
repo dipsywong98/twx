@@ -26,7 +26,9 @@ export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) =
           <Grid item>mission goal: {inf.go}</Grid>
           <Grid item>mission fail: {inf.fa}</Grid>
           <Grid item>camps: {inf.cs.join(',')}</Grid>
-          <Grid item>minplayers: {inf.minp}</Grid>
+          <Grid item>min players: {inf.minp}</Grid>
+          <Grid item>max players: {inf.maxp}</Grid>
+          <Grid item>max life: {inf.ml ?? 3}</Grid>
           <Grid item>author: {inf.sn} ({inf.su})</Grid>
           <Grid item>ability: {inf.ab}</Grid>
           <Grid item>ri: {inf.ri.length > 0 ? inf.ri.join(',') : <i>none</i>}</Grid>

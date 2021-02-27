@@ -1,12 +1,16 @@
 import React, { FunctionComponent, useMemo, useState } from 'react'
 import { Twf, TwfEvent, TwfMusic, TwfRo } from '../type'
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@material-ui/core'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@material-ui/core'
 import { ClickShowRaw } from './ClickShowRaw'
 import { EventShower } from './EventShower'
 import { MissionInfoShower } from './MissionInfoShower'
 import { JsonShower } from './JsonShower'
 import { twfEventAnalysis } from '../utils/twfEventAnalysis'
 import { htmlDecode } from '../utils/htmlDecode'
+import { translateTwfEvents } from '../translators/twf/translateTwfEvents'
+import { clearMiss, getMissed } from '../translators/twf/missingStuff'
+import { download } from '../utils/download'
+import { copyToClipboard } from '../utils/copyToClipboard'
 
 
 export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
@@ -30,19 +34,26 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
     const events: Record<string, TwfEvent> = Object.fromEntries(allEvents.sort((a, b) => a[1].uo - b[1].uo))
     console.log(twfEventAnalysis(Object.values(events)))
     return {
-      roles,
+      roles: Object.fromEntries(roles),
       inf,
       ini,
       map,
       events,
-      musics,
+      musics: Object.fromEntries(musics),
       tags: Array.from(tags)
     }
   }, [twf])
+  const { cgEvents, missed } = useMemo(() => {
+    clearMiss()
+    return {
+      cgEvents: translateTwfEvents(inf, ini, map, roles, events, musics),
+      missed: getMissed()
+    }
+  }, [events])
   const [filterTag, setFilterTag] = useState('')
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
-      <Typography variant={'h5'} style={{marginTop: '16px'}}>
+      <Typography variant={'h5'} style={{ marginTop: '16px' }}>
         {twf.inf.n}
       </Typography>
       <Box style={{ margin: '8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
@@ -61,19 +72,52 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
           </Select>
         </FormControl>
       </Box>
+      <JsonShower json={missed} name={'轉換為CG同人陣'}>
+        <Box>
+          <Typography variant='h6'>
+            點擊下面按鈕複製/下載CG同人檔
+          </Typography>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={() => copyToClipboard(JSON.stringify(cgEvents))}>
+            COPY
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={() => download(JSON.stringify(cgEvents), `${inf.n}.events`)}>
+            DOWNLOAD
+          </Button>
+        </Box>
+        {missed.length > 0 && <Box style={{margin: '8px 0'}}>
+          <Typography>
+            {missed.length} errors when converting.
+            Contact me with the miss json, cgEvents, twf file, to fix it
+          </Typography>
+          <Typography>
+            在轉換時發現{missed.length}個問題。
+            可以聯絡我看看可以怎樣修正。記得提供下面的JSON(按copy JSON/download JSON取得)。
+            如果可以提供.events, .twf, 和文字檔就最好
+          </Typography>
+          <Typography>
+            <a href='https://gamelet.online/user/dipsy/board'>contact 聯絡作者</a>
+          </Typography>
+        </Box>}
+      </JsonShower>
       <MissionInfoShower inf={inf}/>
       <JsonShower json={map} name={`Map: ${map.n}`}/>
       <JsonShower json={ini} name='spawn point'/>
-      <JsonShower json={Object.fromEntries(roles)} name={`${roles.length} roles`}>
-        {roles.map(r => htmlDecode(r[1].n)).join(', ')}
+      <JsonShower json={roles} name={`${Object.keys(roles).length} roles`}>
+        {Object.values(roles).map(r => htmlDecode(r.n)).join(', ')}
       </JsonShower>
-      <JsonShower json={Object.fromEntries(musics)} name={`${musics.length} musics`}>
-        {musics.map(m => m[1].n).join(', ')}
+      <JsonShower json={musics} name={`${Object.keys(musics).length} musics`}>
+        {Object.values(musics).map(m => m.n).join(', ')}
       </JsonShower>
       {Object.entries(events).filter(([_, e]) => filterTag === '' || e.tag?.includes(filterTag)).map(([name, content]) => (
         <EventShower key={name} event={content} eventName={name}/>
       ))}
-      <div style={{height: '24px'}} />
+      <div style={{ height: '24px' }}/>
     </Box>
   )
 }

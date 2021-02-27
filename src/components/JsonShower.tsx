@@ -18,7 +18,7 @@ export const JsonShower: FunctionComponent<{ json: unknown, name: string }> = ({
           {children}
         </Box>
         <Box>
-          <ClickShowRaw raw={json} defaultShow={1}/>
+          <ClickShowRaw raw={json} defaultShow={children ? 0 : 1}/>
         </Box>
       </AccordionDetails>
     </Accordion>
