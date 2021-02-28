@@ -34,7 +34,7 @@ const weapons: Record<string, string> = {
   // 62:'esportStick',
   64: 'laserTurret',
   // 65: '手裡劍',
-  // 70指虎,
+  // 70: 'knuckles',
   110: 'sword',
   335: 'snipegun'
   // 700本靈劍

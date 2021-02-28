@@ -53,22 +53,22 @@ export const addActor: ActionTranslator = withCheckFields([
       weapon1: {
         w1Type: getWeapon(a.w1)
       },
-      camp: getCamp(a.c),
-      group: a.g.toString(),
+      camp: getCamp(a.cp),
+      group: a.g?.toString() ?? '0',
       location: {
         x: x,
         y: y,
         range: '0'
       },
-      rotation: a.r.toString(),
+      rotation: a.r?.toString() ?? '0',
       idleRotate: true,
-      maxhp: a.hp.toString(),
+      maxhp: a.hp?.toString() ?? '100',
       manaPower: '0',
       lives: '1',
       maxAbilityLevel: 1,
-      weight: a.w.toString(),
+      weight: a.w?.toString() ?? '4',
       strength: '1',
-      vision: a.v.toString(),
+      vision: a.v.toString() ?? '300',
       range: '10000',
       score: 10,
       distractWhenHit: true,

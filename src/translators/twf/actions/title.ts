@@ -9,7 +9,7 @@ export const title: ActionTranslator = withCheckFields([
     'type': 'ActionTitle',
     'data': {
       'text': action.t,
-      'size': action.s.toString(),
+      'size': action.s?.toString() ?? '25',
       'bold': true,
       'color': '#ffffff',
       'stroke': '#000000',

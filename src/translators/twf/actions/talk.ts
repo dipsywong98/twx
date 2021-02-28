@@ -11,8 +11,9 @@ interface TwfTalk extends TwfAct {
 }
 
 interface CGTalk extends CgAction{
-  type: 'talk'
+  type: string
   data: {
+    timeout: number
     actorCode: string
     cleanTalk: boolean
     speech: string
@@ -32,8 +33,9 @@ export const talk: ActionTranslator = withCheckFields([
 ])( (cgActions, action) => {
   const [speech, ...speeches] = action.sp
   const cgAction: CGTalk = {
-    type: 'talk',
+    type: 'ActorTalkDelayed',
     data: {
+      timeout: action.dy,
       actorCode: action.c,
       speech,
       cleanTalk: true,

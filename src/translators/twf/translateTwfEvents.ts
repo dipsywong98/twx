@@ -19,6 +19,7 @@ import * as rawActions from './actions'
 import * as rawTriggers from './triggers'
 import * as rawChecks from './checks'
 import { markMissed, MissingStuffType } from './missingStuff'
+import { translateConfig } from './translateConfig'
 
 const actionTranslators: Record<string, ActionTranslator> = rawActions
 const triggerTranslators: Record<string, TriggerTranslator> = rawTriggers
@@ -41,6 +42,7 @@ export const translateEvent = (eventName: string, event: TwfEvent): CgEvent => {
 
 export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles: Record<string, TwfRo>, events: Record<string, TwfEvent>, musics: Record<string, TwfMusic>) => {
   const cgEvents: CgEvents = emptyCgEvents()
+  cgEvents.config.configs.TwilightWarsConfig = translateConfig(inf,ini,map,roles, events, musics)
   cgEvents.events = Object.entries(events).map(([eventName, event]) => {
     const cgEvent = translateEvent(eventName, event)
     cgEvent.actions = event.act.reduce<CgAction[]>((cgActions, act) => {
@@ -55,6 +57,12 @@ export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles:
         return [...cgActions, { type: 'placeholderAction', data: act }]
       }
     }, [])
+    cgEvent.actions.unshift({
+      type: "Wait",
+      data: {
+        duration: event.delay?.toString() ?? '0'
+      }
+    })
     cgEvent.checks = event.cks.filter(({ type }) => !(type in triggerTranslators)).reduce<CgCheck[]>((cgChecks, check) => {
       if (check.type in checkTranslators) {
         return checkTranslators[check.type](cgChecks, check)

@@ -3,7 +3,7 @@ import { getLocation } from './utils/getLocations'
 
 export const translateConfig = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles: Record<string, TwfRo>, events: Record<string, TwfEvent>, musics: Record<string, TwfMusic>): CgTwilightWarsConfig => {
   return {
-    title: '',
+    title: inf.n,
     serverConfig: {
       minPlayers: inf.minp,
       supportSignin: true,
@@ -29,7 +29,7 @@ export const translateConfig = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles: Re
       campOpRoyal: inf.cs.includes(1),
       campOpThird: inf.cs.includes(2)
     },
-    map: 'CG.TwilightWarsLib/default.twmap',
+    map: `CG.twf_util/${map.n ?? map.o}.twmap`,
     maxAbilityLevel: inf.ab,
     nextGameEnabled: true,
     disableNextGameOnMissionComplete: false,
