@@ -43,11 +43,17 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
       tags: Array.from(tags)
     }
   }, [twf])
-  const { cgEvents, missed } = useMemo(() => {
-    clearMiss()
-    return {
-      cgEvents: translateTwfEvents(inf, ini, map, roles, events, musics),
-      missed: getMissed()
+  const { cgEvents, missed, error } = useMemo(() => {
+    try{
+      clearMiss()
+      return {
+        cgEvents: translateTwfEvents(inf, ini, map, roles, events, musics),
+        missed: getMissed()
+      }
+    }catch (error) {
+      return {
+        error
+      }
     }
   }, [events, inf, ini, map, musics, roles])
   const [filterTag, setFilterTag] = useState('')
@@ -73,7 +79,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
         </FormControl>
       </Box>
       <JsonShower json={missed} name={'轉換為CG同人陣'}>
-        <Box>
+        {error === undefined && <Box>
           <Typography variant='h6'>
             點擊下面按鈕複製/下載CG同人檔
           </Typography>
@@ -89,17 +95,27 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
             onClick={() => download(JSON.stringify(cgEvents), `${inf.n}.events`)}>
             DOWNLOAD
           </Button>
-        </Box>
-        {missed.length > 0 && <Box style={{margin: '8px 0'}}>
+        </Box>}
+        {(missed?.length ?? 0) > 0 && <Box style={{margin: '8px 0'}}>
           <Typography>
-            在轉換時發現{missed.length}個問題。
+            在轉換時發現{missed?.length}個問題。
             可以聯絡我看看可以怎樣修正。記得提供下面的JSON(按copy JSON/download JSON取得)。
             如果可以提供.events, .twf, 和文字檔就最好
           </Typography>
-          <Typography>
-            <a href='https://gamelet.online/user/dipsy/board'>聯絡作者</a>
-          </Typography>
         </Box>}
+        {
+          error && <Box>
+            <Typography>轉檔時發生錯誤</Typography>
+            <pre>
+              <code>
+                {JSON.stringify(error, null, 2)}
+              </code>
+            </pre>
+          </Box>
+        }
+        <Typography>
+          <a href='https://gamelet.online/user/dipsy/board'>聯絡作者</a>
+        </Typography>
       </JsonShower>
       <MissionInfoShower inf={inf}/>
       <JsonShower json={map} name={`地圖: ${map.n ?? map.o}`}/>
