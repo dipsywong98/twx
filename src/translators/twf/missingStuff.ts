@@ -39,7 +39,7 @@ export const checkMissed = (knownFields: string[], target: TwfCheck&TwfAct): voi
   })
 }
 
-export const withCheckFields = <T>(knownFields: string[]) => (translator: Translator<T>): Translator<T> => {
+export const withCheckFields = (knownFields: string[]) => (translator: Translator): Translator => {
   return (cgStuffs, twfStuff) => {
     checkMissed(knownFields, twfStuff as TwfAct)
     return translator(cgStuffs, twfStuff)
