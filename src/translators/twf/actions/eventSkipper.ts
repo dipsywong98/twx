@@ -7,12 +7,12 @@ import { withCheckFields } from '../missingStuff'
 
 export const eventSkipper: ActionTranslator = withCheckFields([
   'd' // duration, but will ignore it
-])( (cgActions, action) => ([
+])((cgActions, action) => ([
   {
-    "type": "SkipEvent",
-    "data": {
-      "skipDurationType": "auto",
-      "addDuration": "0"
+    type: 'SkipEvent',
+    data: {
+      skipDurationType: 'auto',
+      addDuration: '0'
     }
   },
   ...cgActions

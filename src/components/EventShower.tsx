@@ -3,6 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, List, Paper, 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { TwfAct, TwfCheck, TwfEvent } from '../type'
 import { ClickShowRaw } from './ClickShowRaw'
+import PropTypes from 'prop-types'
 
 const CheckCell: FunctionComponent<{ check: TwfCheck, index: number }> = ({ check, index }) => {
   return (
@@ -20,6 +21,11 @@ const CheckCell: FunctionComponent<{ check: TwfCheck, index: number }> = ({ chec
       </span>
     </Paper>
   )
+}
+
+CheckCell.propTypes = {
+  check: PropTypes.any.isRequired,
+  index: PropTypes.number.isRequired
 }
 
 const ActionCell: FunctionComponent<{ action: TwfAct, index: number }> = ({ action, index }) => {
@@ -40,25 +46,30 @@ const ActionCell: FunctionComponent<{ action: TwfAct, index: number }> = ({ acti
   )
 }
 
+ActionCell.propTypes = {
+  action: PropTypes.any.isRequired,
+  index: PropTypes.number.isRequired
+}
+
 export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string }> = ({ event, eventName }) => {
   const eventMetaString: string = useMemo(() => {
-    let strs = []
-    if (event.itime) {
+    const strs = []
+    if (event.itime !== undefined) {
       strs.push(`啟動時間或${event.itime}毫秒`)
     }
-    if (event.delay) {
+    if (event.delay !== undefined) {
       strs.push(`延遲發動${event.delay}毫秒`)
     }
-    if (event.rep) {
+    if (event.rep !== undefined) {
       strs.push(`重複${event.rep}次`)
     }
-    if (event.repInt) {
+    if (event.repInt !== undefined) {
       strs.push(`重複間隔${event.repInt}毫秒`)
     }
-    if (event.repDly) {
+    if (event.repDly !== undefined) {
       strs.push(`重複延遲發動${event.repDly}毫秒`)
     }
-    if (event.recInt) {
+    if (event.recInt !== undefined) {
       strs.push(`重複檢查間隔${event.recInt}毫秒`)
     }
     const knownKeys = [
@@ -85,8 +96,7 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
       <AccordionSummary
         expandIcon={<ExpandMoreIcon/>}
         aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
+        id="panel1a-header">
         <Typography>事件 {eventName}</Typography>
         {eventMetaString !== '' &&
         <Typography component='p' variant='caption' style={{ alignSelf: 'baseline', marginLeft: '8px' }}>
@@ -113,4 +123,9 @@ export const EventShower: FunctionComponent<{ event: TwfEvent, eventName: string
       </AccordionDetails>
     </Accordion>
   )
+}
+
+EventShower.propTypes = {
+  event: PropTypes.any.isRequired,
+  eventName: PropTypes.string.isRequired
 }

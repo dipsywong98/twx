@@ -8,16 +8,16 @@ import { getLocations } from '../utils/getLocations'
 
 export const focus: ActionTranslator = withCheckFields([
   'lcs'
-])( (cgActions, action) => ([
+])((cgActions, action) => ([
   ...cgActions, {
-    "type": "CameraFocus",
-    "data": {
-      "focusType": "loc",
-      "location": getLocations(action.lcs)[0],
-      "moveRate": 0.5,
-      "moveMax": 32,
-      "playerMatch": {
-        "skip": true
+    type: 'CameraFocus',
+    data: {
+      focusType: 'loc',
+      location: getLocations(action.lcs)[0],
+      moveRate: 0.5,
+      moveMax: 32,
+      playerMatch: {
+        skip: true
       }
     }
   }

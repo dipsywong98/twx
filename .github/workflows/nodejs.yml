@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --frozen-lockfile
+      - run: yarn lint
       - run: yarn build
       - uses: peaceiris/actions-gh-pages@v3
         with:

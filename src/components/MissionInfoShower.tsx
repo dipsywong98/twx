@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { TwfInf } from '../type'
 import { ClickShowRaw } from './ClickShowRaw'
 import { getCamp } from '../translators/twf/utils/getCamp'
+import PropTypes from 'prop-types'
 
 export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) => {
   return (
@@ -11,17 +12,16 @@ export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) =
       <AccordionSummary
         expandIcon={<ExpandMoreIcon/>}
         aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
+        id="panel1a-header">
         <Typography>任務資訊: {inf.n}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid style={{maxWidth: '100%'}} spacing={1} container direction={'column'}>
+        <Grid style={{ maxWidth: '100%' }} spacing={1} container direction={'column'}>
           <Grid item>名稱: {inf.n}</Grid>
           <Grid item>說明:</Grid>
-          <Grid style={{maxWidth: '100%'}}>
+          <Grid style={{ maxWidth: '100%' }}>
             {inf.dp.split(/[\n\r]+/g).map((str, k) => (
-              <div key={k} style={{lineBreak: 'auto', maxWidth: '100%'}}>{str}</div>
+              <div key={k} style={{ lineBreak: 'auto', maxWidth: '100%' }}>{str}</div>
             ))}
           </Grid>
           <Grid item>成功條件: {inf.go}</Grid>
@@ -40,4 +40,8 @@ export const MissionInfoShower: FunctionComponent<{ inf: TwfInf }> = ({ inf }) =
       </AccordionDetails>
     </Accordion>
   )
+}
+
+MissionInfoShower.propTypes = {
+  inf: PropTypes.any.isRequired
 }

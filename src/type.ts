@@ -25,25 +25,25 @@ export interface TwfInf {
   maxp: number // max player
   go: string // goal
   cs: number[] // camps allowed 0|1|2
-  fa: string  // fail
-  ab: number  // ability
+  fa: string // fail
+  ab: number // ability
   n: string // name of mission
   sn: string // name of author
   minp: number // minimum player
   su: string // author userId
   dp: string // description
-  ri: []  // resource id (?
+  ri: [] // resource id (?
 }
 
 /**
  * Interface to hold spawn point Info
  */
 export interface TwfIni {
-  ifus: string  // initial camera coord string
+  ifus: string // initial camera coord string
   iclm: {
-    "0": string[] // coord strings
-    "1": string[] // coord strings
-    "2": string[] // coord strings
+    '0': string[] // coord strings
+    '1': string[] // coord strings
+    '2': string[] // coord strings
   }
 }
 
@@ -70,7 +70,7 @@ export interface TwfMusic {
 export interface TwfEvent {
   tag?: string
   act: TwfAct[]
-  uo: number  // order number
+  uo: number // order number
   cks: TwfCheck[]
   repInt?: number // repeat interval
   rep?: number // repeat count
@@ -79,7 +79,6 @@ export interface TwfEvent {
   delay?: number
   recInt?: number
 }
-
 
 export type TwfAct = Record<string, any> & {
   type: string
@@ -105,20 +104,20 @@ export interface Twr {
   decos: TwrDeco[]
 }
 
-export type TwmLayer = {
+export interface TwmLayer {
   map: string | {
     [floorName: string]: string[]
   }
 }
 
-export type Twm = {
-  objs: { [objectName: string]: string[] },
-  walls: { [wallName: string]: string[] },
+export interface Twm {
+  objs: { [objectName: string]: string[] }
+  walls: { [wallName: string]: string[] }
   mapset: {
-    c: string,
+    c: string
     v: string
   }
-  layers: TwmLayer[],
+  layers: TwmLayer[]
   size: string
 }
 
@@ -216,8 +215,8 @@ export interface CgEvents {
   events: CgEvent[]
 }
 
-export type ActionTranslator = (cgActions: CgAction[], action: TwfAct)=> CgAction[]
-export type CheckTranslator = (cgChecks: CgCheck[], check: TwfCheck)=> CgCheck[]
-export type TriggerTranslator = (cgTriggers: CgTrigger[], check: TwfCheck)=> CgTrigger[]
+export type ActionTranslator = (cgActions: CgAction[], action: TwfAct) => CgAction[]
+export type CheckTranslator = (cgChecks: CgCheck[], check: TwfCheck) => CgCheck[]
+export type TriggerTranslator = (cgTriggers: CgTrigger[], check: TwfCheck) => CgTrigger[]
 
 export type Translator = CheckTranslator|TriggerTranslator|ActionTranslator

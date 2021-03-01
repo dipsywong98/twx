@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import {
   AppBar,
   Box,
@@ -12,8 +12,9 @@ import {
   useMediaQuery
 } from '@material-ui/core'
 import './App.css'
-import { Brightness7 } from '@material-ui/icons'
+import { Brightness7, Info } from '@material-ui/icons'
 import { ReadStuffPage } from '../pages/ReadStuffPage'
+import { InfoModal } from './InfoModal'
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -27,9 +28,13 @@ const lightTheme = createMuiTheme({
   }
 })
 
-function App () {
+const App: FunctionComponent = () => {
   const [isDarkMode, setIsDarkMode] = useState(useMediaQuery('(prefers-color-scheme: dark)'))
   const [reopening, setReopening] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const handleModalClose = (): void => {
+    setOpenModal(false)
+  }
   const handleOpen = (): void => {
     setReopening(true)
   }
@@ -66,6 +71,9 @@ function App () {
               <Button href={'https://magile.gamelet.online/'}>
                 魔法飛彈大作戰
               </Button>
+              <Button title='Info' onClick={() => setOpenModal(true)}>
+                <Info/>
+              </Button>
               <Button title='Light/Dark Mode' onClick={() => setIsDarkMode(!isDarkMode)}>
                 <Brightness7/>
               </Button>
@@ -74,6 +82,7 @@ function App () {
         </AppBar>
         {!reopening && <ReadStuffPage/>}
       </Box>
+      <InfoModal open={openModal} onClose={handleModalClose}/>
     </MuiThemeProvider>
   )
 }

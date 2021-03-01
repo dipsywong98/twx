@@ -5,21 +5,21 @@ import { getCamp } from '../utils/getCamp'
 import { getLocations } from '../utils/getLocations'
 
 interface TwfAddActor {
-  v: number   // vision(?
-  cp: number  // camp
-  w: number   // weight(?
-  w0: number   // weapon
-  w1: number   // weapon
-  r: number   // rotation
-  pts: unknown[]  // dont know
-  hp: number  // hp
+  v: number // vision(?
+  cp: number // camp
+  w: number // weight(?
+  w0: number // weapon
+  w1: number // weapon
+  r: number // rotation
+  pts: unknown[] // dont know
+  hp: number // hp
   n: string
   ro: {
-    sr: number  // system role (?
+    sr: number // system role (?
   }
   g: number // group number
   lcs: Array<{ lc: string }> // locations, lc in '\d+,\d+' format
-  c: string   // character code
+  c: string // character code
 }
 
 export const addActor: ActionTranslator = withCheckFields([

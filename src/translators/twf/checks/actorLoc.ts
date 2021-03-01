@@ -8,16 +8,16 @@ export const actorLoc: CheckTranslator = withCheckFields([
   'lcs' // locations
 ])((cgChecks, check) => [
   ...cgChecks,
-    {
-      "type": "ActorLoc",
-      "data": {
-        "actorCode": check.c,
-        "locs": getLocations(check.lcs),
-        "_logi": {
-          "_and_or": ""
-        },
-        "_elseEventId": ""
-      }
+  {
+    type: 'ActorLoc',
+    data: {
+      actorCode: check.c,
+      locs: getLocations(check.lcs),
+      _logi: {
+        _and_or: ''
+      },
+      _elseEventId: ''
     }
+  }
 ]
 )

@@ -11,7 +11,7 @@ import { translateTwfEvents } from '../translators/twf/translateTwfEvents'
 import { clearMiss, getMissed } from '../translators/twf/missingStuff'
 import { download } from '../utils/download'
 import { copyToClipboard } from '../utils/copyToClipboard'
-
+import PropTypes from 'prop-types'
 
 export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
   const { inf, ini, map, roles, events, musics, tags } = useMemo(() => {
@@ -44,13 +44,13 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
     }
   }, [twf])
   const { cgEvents, missed, error } = useMemo(() => {
-    try{
+    try {
       clearMiss()
       return {
         cgEvents: translateTwfEvents(inf, ini, map, roles, events, musics),
         missed: getMissed()
       }
-    }catch (error) {
+    } catch (error: unknown) {
       return {
         error
       }
@@ -96,7 +96,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
             DOWNLOAD
           </Button>
         </Box>}
-        {(missed?.length ?? 0) > 0 && <Box style={{margin: '8px 0'}}>
+        {(missed?.length ?? 0) > 0 && <Box style={{ margin: '8px 0' }}>
           <Typography>
             在轉換時發現{missed?.length}個問題。
             可以聯絡我看看可以怎樣修正。記得提供下面的JSON(按copy JSON/download JSON取得)。
@@ -104,7 +104,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
           </Typography>
         </Box>}
         {
-          error && <Box>
+          error !== undefined && <Box>
             <Typography>轉檔時發生錯誤</Typography>
             <pre>
               <code>
@@ -132,4 +132,8 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
       <div style={{ height: '24px' }}/>
     </Box>
   )
+}
+
+TwfShower.propTypes = {
+  twf: PropTypes.any.isRequired
 }

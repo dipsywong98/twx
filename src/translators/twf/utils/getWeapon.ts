@@ -20,10 +20,10 @@ const weapons: Record<string, string> = {
   20: 'hatchet',
   //  21:'iceSaber',
   27: 'giantAxe',
-  //28:'白銀雙鷹',
+  // 28:'白銀雙鷹',
   29: 'timeBomb',
   30: 'rocketLauncher',
-  31: 'flameThrower',   // fire gun
+  31: 'flameThrower', // fire gun
   // 33:'laserGun',
   // 34:'doubleKnife',
   35: 'anaestheticRifle',

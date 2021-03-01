@@ -1,8 +1,9 @@
-import { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
 import { JsonTree } from './JsonTree'
 import { copyToClipboard } from '../utils/copyToClipboard'
 import { download, downloadTwmap } from '../utils/download'
+import PropTypes from 'prop-types'
 
 export const ClickShowRaw: FunctionComponent<{ raw: unknown, defaultShow?: number, name?: string }> = (
   {
@@ -24,8 +25,8 @@ export const ClickShowRaw: FunctionComponent<{ raw: unknown, defaultShow?: numbe
           onClick={() => download(JSON.stringify(raw, null, 2), name !== undefined ? `${name}.json` : 'download.json')}>
           Download JSON
         </Button>
-        {name?.endsWith('.twmap') && <Button
-          onClick={() => downloadTwmap(raw, name)}>
+        {(name?.endsWith('.twmap') ?? false) && <Button
+          onClick={() => downloadTwmap(raw, name ?? 'map.twmap')}>
           Download TWMAP
         </Button>}
       </ButtonGroup>
@@ -37,5 +38,10 @@ export const ClickShowRaw: FunctionComponent<{ raw: unknown, defaultShow?: numbe
       )}
     </>
   )
+}
 
+ClickShowRaw.propTypes = {
+  raw: PropTypes.any,
+  defaultShow: PropTypes.number,
+  name: PropTypes.string
 }

@@ -6,22 +6,22 @@ export const title: ActionTranslator = withCheckFields([
   's' // size
 ])((cgActions, action) => ([
   ...cgActions, {
-    'type': 'ActionTitle',
-    'data': {
-      'text': action.t,
-      'size': action.s?.toString() ?? '25',
-      'bold': true,
-      'color': '#ffffff',
-      'stroke': '#000000',
-      'strokeThickness': 4,
-      'direction': 'rtol',
-      'shiftX': 0,
-      'shiftY': -60,
-      'duration': '2600',
-      'delay': '0',
-      'fadeinDuration': '300',
-      'fadeoutDuration': '300',
-      'wait': false
+    type: 'ActionTitle',
+    data: {
+      text: action.t,
+      size: action.s?.toString() ?? '25',
+      bold: true,
+      color: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 4,
+      direction: 'rtol',
+      shiftX: 0,
+      shiftY: -60,
+      duration: '2600',
+      delay: '0',
+      fadeinDuration: '300',
+      fadeoutDuration: '300',
+      wait: false
     }
   }
 ]))

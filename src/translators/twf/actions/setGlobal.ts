@@ -31,10 +31,9 @@ interface StrV {
   strs: string[]
 }
 
-
 export const setGlobal: ActionTranslator = withCheckFields([
   'vt', // type: int|calc
-  'k',  // name
+  'k', // name
   // 'd',  // idk what is this
   'v'
 
@@ -64,7 +63,7 @@ const factory = (action: TwfSetGlobal<unknown>): CgAction => {
     default:
       markMissed({
         type: MissingStuffType.FIELD,
-        what: 'vt:'+action.vt,
+        what: 'vt:' + action.vt,
         example: action
       })
       return {
@@ -87,10 +86,10 @@ const makeInt = (action: TwfSetGlobal<IntV>): CgAction => {
 
 const makeCalc = (action: TwfSetGlobal<CalcV>): CgAction => {
   let value = `${wrapExpression(action.v.v0)}${action.v.op}${action.v.v1}`
-  if(!knownOps.includes(action.v.op)) {
+  if (!knownOps.includes(action.v.op)) {
     markMissed({
       type: MissingStuffType.FIELD,
-      what: 'v.op'+action.v.op,
+      what: 'v.op' + action.v.op,
       example: action
     })
   }

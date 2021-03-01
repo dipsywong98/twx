@@ -4,7 +4,7 @@ import { withCheckFields } from '../missingStuff'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface TwfTalk extends TwfAct {
   type: 'talk'
-  sp: string[]  // what to say
+  sp: string[] // what to say
   du: number // duration
   dy: number // delay
   c: string // actor code
@@ -29,8 +29,8 @@ export const talk: ActionTranslator = withCheckFields([
   'sp', // what to say
   'du', // duration
   'dy', // delay
-  'c'   // actor code
-])( (cgActions, action) => {
+  'c' // actor code
+])((cgActions, action) => {
   const [speech, ...speeches] = action.sp
   const cgAction: CGTalk = {
     type: 'ActorTalkDelayed',

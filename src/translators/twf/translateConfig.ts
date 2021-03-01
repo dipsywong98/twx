@@ -35,11 +35,10 @@ export const translateConfig = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles: Re
     disableNextGameOnMissionComplete: false,
     playDefaultMusic: true,
     useDefaultItems: false,
-    useDefaultCampLocs: (ini.iclm[0].length+ini.iclm[1].length+ini.iclm[2].length) > 1,
-    skydowLocs: ini.iclm[0].map(s=>getLocation(s)),
-    royalLocs: ini.iclm[1].map(s=>getLocation(s)),
-    thirdLocs: ini.iclm[2].map(s=>getLocation(s)),
+    useDefaultCampLocs: (ini.iclm[0].length + ini.iclm[1].length + ini.iclm[2].length) > 1,
+    skydowLocs: ini.iclm[0].map(s => getLocation(s)),
+    royalLocs: ini.iclm[1].map(s => getLocation(s)),
+    thirdLocs: ini.iclm[2].map(s => getLocation(s)),
     enabled: true
   }
-
 }

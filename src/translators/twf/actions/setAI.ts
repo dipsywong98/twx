@@ -10,10 +10,10 @@ interface TwfSetAI extends TwfAct{
 }
 
 export const setAI: ActionTranslator = withCheckFields([
-  'c',  // actor code
-  'v',  // some value
-  'k',  // the ai what value
-])( (cgActions, action) => {
+  'c', // actor code
+  'v', // some value
+  'k' // the ai what value
+])((cgActions, action) => {
   return ([
     ...cgActions,
     factory(action as unknown as TwfSetAI)
@@ -27,7 +27,7 @@ const factory = (action: TwfSetAI) => {
     default:
       markMissed({
         type: MissingStuffType.FIELD,
-        what: 'k:'+action.k,
+        what: 'k:' + action.k,
         example: action
       })
       return {
@@ -38,10 +38,10 @@ const factory = (action: TwfSetAI) => {
 }
 
 const buildRotation = (action: TwfSetAI) => ({
-  "type": "ActorFacing",
-  "data": {
-    "actorCode": action.c,
-    "targetType": "degree",
-    "degree": action.v.toString()
+  type: 'ActorFacing',
+  data: {
+    actorCode: action.c,
+    targetType: 'degree',
+    degree: action.v.toString()
   }
 })

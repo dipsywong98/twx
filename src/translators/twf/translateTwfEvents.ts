@@ -40,9 +40,9 @@ export const translateEvent = (eventName: string, event: TwfEvent): CgEvent => {
   }
 }
 
-export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles: Record<string, TwfRo>, events: Record<string, TwfEvent>, musics: Record<string, TwfMusic>) => {
+export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles: Record<string, TwfRo>, events: Record<string, TwfEvent>, musics: Record<string, TwfMusic>): CgEvents => {
   const cgEvents: CgEvents = emptyCgEvents()
-  cgEvents.config.configs.TwilightWarsConfig = translateConfig(inf,ini,map,roles, events, musics)
+  cgEvents.config.configs.TwilightWarsConfig = translateConfig(inf, ini, map, roles, events, musics)
   cgEvents.events = Object.entries(events).map(([eventName, event]) => {
     const cgEvent = translateEvent(eventName, event)
     cgEvent.actions = event.act.reduce<CgAction[]>((cgActions, act) => {
@@ -58,7 +58,7 @@ export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles:
       }
     }, [])
     cgEvent.actions.unshift({
-      type: "Wait",
+      type: 'Wait',
       data: {
         duration: event.delay?.toString() ?? '0'
       }

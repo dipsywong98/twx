@@ -1,7 +1,7 @@
 import { CgEvents } from '../../type'
 
 export const emptyCgEvents = (): CgEvents => ({
-  '$schema': 'https://code.gamelet.com/gassets/schema/events/v1',
+  $schema: 'https://code.gamelet.com/gassets/schema/events/v1',
   config: {
     stage: {
       width: 600,

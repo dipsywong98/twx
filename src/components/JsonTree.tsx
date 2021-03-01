@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import JSONTree from 'react-json-tree'
 import { useTheme } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 export const JsonTree: FunctionComponent<{ data: unknown }> = ({ data }) => {
   const theme = {
@@ -27,4 +28,8 @@ export const JsonTree: FunctionComponent<{ data: unknown }> = ({ data }) => {
   return (
     <JSONTree data={data} theme={theme} invertTheme={isLightTheme}/>
   )
+}
+
+JsonTree.propTypes = {
+  data: PropTypes.any.isRequired
 }

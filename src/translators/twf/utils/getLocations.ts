@@ -1,8 +1,8 @@
 import { CgLocation } from '../../../type'
 
 export const getLocations = (lcs: Array<{lc: string}>): CgLocation[] => {
-  return lcs.map(({lc}) => {
-    const [x,y] = lc.split(',')
+  return lcs.map(({ lc }) => {
+    const [x, y] = lc.split(',')
     return {
       x,
       y,
@@ -11,11 +11,11 @@ export const getLocations = (lcs: Array<{lc: string}>): CgLocation[] => {
   })
 }
 
-export const getLocation = (coordString: string | undefined, defaultVal: CgLocation = {x: '0', y: '0'}): CgLocation => {
-  if(coordString === undefined) {
+export const getLocation = (coordString: string | undefined, defaultVal: CgLocation = { x: '0', y: '0' }): CgLocation => {
+  if (coordString === undefined) {
     return defaultVal
   }
-  const [x,y] = coordString.split(',')
+  const [x, y] = coordString.split(',')
   return {
     x,
     y

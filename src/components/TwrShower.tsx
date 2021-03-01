@@ -4,21 +4,21 @@ import { ClickShowRaw } from './ClickShowRaw'
 import { Twr } from '../type'
 import { useTwrRender } from '../hooks/useTwrRender'
 import { downloadDataUrl } from '../utils/download'
-
+import PropTypes from 'prop-types'
 
 export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, name }) => {
   const [showHead, setShowHead] = useState(true)
   const [showHands, setShowHands] = useState(true)
   const [showFoot, setShowFoot] = useState(true)
   const ref = useTwrRender(twr, showHead, showHands, showFoot)
-  const handleDownload = () => {
-    if(ref.current !== null) {
-      downloadDataUrl(ref.current?.toDataURL("image/png;base64"), `${name}.png`)
+  const handleDownload = (): void => {
+    if (ref.current !== null) {
+      downloadDataUrl(ref.current?.toDataURL('image/png;base64'), `${name}.png`)
     }
   }
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
-      <Typography variant={'h5'} style={{marginTop: '16px'}}>
+      <Typography variant={'h5'} style={{ marginTop: '16px' }}>
         {name}
       </Typography>
       <Box style={{ margin: '8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
@@ -26,7 +26,7 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
           <ClickShowRaw raw={twr} name={`${name}.twr`} defaultShow={1}/>
         </Box>
       </Box>
-      <Box style={{display: 'flex'}}>
+      <Box style={{ display: 'flex' }}>
         <Box>
           <canvas ref={ref}/>
         </Box>
@@ -59,4 +59,9 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
       <div style={{ height: '24px' }}/>
     </Box>
   )
+}
+
+TwrShower.propTypes = {
+  twr: PropTypes.any.isRequired,
+  name: PropTypes.any.isRequired
 }
