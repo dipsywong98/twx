@@ -11,7 +11,7 @@ export const InfoModal: React.ComponentType<{open: boolean, onClose: () => void}
       aria-describedby="simple-modal-description">
       <DialogTitle id="simple-dialog-title">同人陣轉檔器</DialogTitle>
       <DialogContent>
-        Made by dipsy
+        Made by dipsy, fk
       </DialogContent>
     </Dialog>
   )
