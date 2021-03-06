@@ -28,7 +28,7 @@ export const ReadStuffPage: FunctionComponent = () => {
       setError('please select one file to open')
       return
     }
-    const file = acceptedFiles[0] as File & {path: string}
+    const file = acceptedFiles[0] as File & { path: string }
     const ext = file.path.replace(/^.*\.(tw\w+?)$/, '$1')
     const fileName = file.path
     setName(fileName.replace(`.${ext}`, ''))
@@ -81,23 +81,23 @@ export const ReadStuffPage: FunctionComponent = () => {
         .then(setFileContentJson)
         .catch(async () => {
           return await readGzipFileAsJson(file)
-        })
-        .then(setFileContentJson)
-        .catch((e: Error) => {
-          console.error(e)
-          setError(e.message ?? e.name ?? e as unknown as string)
+            .then(setFileContentJson)
+            .catch((e: Error) => {
+              console.error(e)
+              setError(e.message ?? e.name ?? e as unknown as string)
+            })
         })
     }
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
   return (
     <Box
-style={{
-  flex: 1,
-  overflow: 'auto',
-  paddingBottom: '16px'
-}}
-{...(fileContentJson === null ? getRootProps() : {})} >
+      style={{
+        flex: 1,
+        overflow: 'auto',
+        paddingBottom: '16px'
+      }}
+      {...(fileContentJson === null ? getRootProps() : {})} >
       <Container style={{ height: '100%' }}>
         <input {...getInputProps()} />
         {
@@ -106,20 +106,20 @@ style={{
           //   <p>Drag 'n' drop some files here, or click to select files</p>
         }
         {fileContentJson === null && <Box
-style={{
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignContent: 'center',
-  height: '100%'
-}}>
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignContent: 'center',
+            height: '100%'
+          }}>
           <Box>
             <Paper style={{ padding: '30px' }}>
               <Typography>
                 Drag and drop a twf/twm/twmap/twr file here, or click to open
               </Typography>
               <Typography>
-                拖一個twf/twm/twmap/twr檔至此，或按此打開
+                拖一個twf/twm/twmap/twr/twrole/sav/var檔至此，或按此打開
               </Typography>
               {
                 error !== '' && <Typography color={'error'}>Error: {error}</Typography>
