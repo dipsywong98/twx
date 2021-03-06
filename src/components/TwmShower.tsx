@@ -4,12 +4,16 @@ import { ClickShowRaw } from './ClickShowRaw'
 import { twmapInB64Text } from '../utils/twmapInB64Text'
 import { copyToClipboard } from '../utils/copyToClipboard'
 import PropTypes from 'prop-types'
+import { downloadTwmap } from '../utils/download'
 
 export const TwmShower: FunctionComponent<{ twm: unknown, name: string }> = ({ twm, name }) => {
   const [copied, setCopied] = useState(false)
   const handleCopy = (): void => {
     copyToClipboard(twmapInB64Text(twm))
     setCopied(true)
+  }
+  const handleDownload = (): void => {
+    downloadTwmap(twm, `${name}.twmap`)
   }
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
@@ -23,6 +27,9 @@ export const TwmShower: FunctionComponent<{ twm: unknown, name: string }> = ({ t
       </Box>
       <Button variant='contained' color='primary' onClick={handleCopy}>
         {copied ? 'COPIED' : 'Copy TWMAP'}
+      </Button>
+      <Button variant='contained' color='primary' onClick={handleDownload}>
+        DOWNLOAD TWMAP
       </Button>
       <Box>
         <TextField

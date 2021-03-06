@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback, useState } from 'react'
 import { Box, Container, Paper, Typography } from '@material-ui/core'
 import { useDropzone } from 'react-dropzone'
 import { readGzipFileAsJson, readTwmapFileAsJson, readTwxFileAsJson } from '../utils/readFile'
-import { Twf, Twr } from '../type'
+import { Twf, Twm, Twr } from '../type'
 import { TwfShower } from '../components/TwfShower'
 import { TwmShower } from '../components/TwmShower'
 import { ClickShowRaw } from '../components/ClickShowRaw'
@@ -41,8 +41,8 @@ export const ReadStuffPage: FunctionComponent = () => {
         })
       setFileType(FileType.TWF)
     } else if (ext === 'twm') {
-      readTwxFileAsJson(file)
-        .then(twm => translateTwm(twm))
+      readTwxFileAsJson<Twm>(file)
+        .then(translateTwm)
         .then(setFileContentJson)
         .catch((e: Error) => {
           console.error(e)
