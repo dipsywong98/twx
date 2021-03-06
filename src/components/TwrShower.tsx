@@ -1,20 +1,27 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useMemo, useState } from 'react'
 import { Box, Button, Checkbox, Typography } from '@material-ui/core'
 import { ClickShowRaw } from './ClickShowRaw'
 import { Twr } from '../type'
 import { useTwrRender } from '../hooks/useTwrRender'
-import { downloadDataUrl } from '../utils/download'
+import { downloadAsBlob, downloadDataUrl } from '../utils/download'
 import PropTypes from 'prop-types'
+import { twrToTwrole } from '../translators/twrToTwrole'
 
 export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, name }) => {
   const [showHead, setShowHead] = useState(true)
   const [showHands, setShowHands] = useState(true)
   const [showFoot, setShowFoot] = useState(true)
   const ref = useTwrRender(twr, showHead, showHands, showFoot)
+  const twrole = useMemo(() => {
+    return twrToTwrole(twr)
+  }, [twr])
   const handleDownload = (): void => {
     if (ref.current !== null) {
       downloadDataUrl(ref.current?.toDataURL('image/png;base64'), `${name}.png`)
     }
+  }
+  const handleSaveTwrole = (): void => {
+    downloadAsBlob(JSON.stringify(twrole), `${name}.twrole`)
   }
   return (
     <Box onClick={e => e.stopPropagation()} style={{ height: '100%' }}>
@@ -52,6 +59,9 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
           <Box>
             <Button onClick={handleDownload} variant='contained' color='primary'>
               Save PNG
+            </Button>
+            <Button onClick={handleSaveTwrole} variant='contained' color='primary'>
+              Save TWROLE
             </Button>
           </Box>
         </Box>

@@ -97,11 +97,53 @@ export interface TwrDeco {
   r: number
 }
 
+export interface TwroleDeco {
+  x: number
+  sx: number
+  y: number
+  sy: number
+  c: string
+  r: number
+}
+
 export interface Twr {
   hand: number
   foot: number
   head: number
   decos: TwrDeco[]
+}
+
+export interface Twrole {
+  data: {
+    dr: number
+    cr: {
+      head: {
+        f: number
+        s: number
+      }
+      cape: {
+        f: number
+        s: number
+      }
+      hand: {
+        f: number
+        s: number
+      }
+      foot: {
+        f: number
+        s: number
+      }
+      deco: TwroleDeco[]
+    }
+  }
+  hash: string
+  thumb: {
+    dataUrl: string
+    pivot: {
+      x: number
+      y: number
+    }
+  }
 }
 
 export interface TwmLayer {
@@ -219,4 +261,4 @@ export type ActionTranslator = (cgActions: CgAction[], action: TwfAct) => CgActi
 export type CheckTranslator = (cgChecks: CgCheck[], check: TwfCheck) => CgCheck[]
 export type TriggerTranslator = (cgTriggers: CgTrigger[], check: TwfCheck) => CgTrigger[]
 
-export type Translator = CheckTranslator|TriggerTranslator|ActionTranslator
+export type Translator = CheckTranslator | TriggerTranslator | ActionTranslator
