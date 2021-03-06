@@ -38,7 +38,7 @@ const readFileAsDataURL: (file: File) => Promise<string> = readFile('readAsDataU
 const readFileAsText: (file: File) => Promise<string> = readFile('readAsText') as (file: File) => Promise<string>
 const readFileAsArrayBuffer: (file: File) => Promise<ArrayBuffer> = readFile('readAsArrayBuffer') as (file: File) => Promise<ArrayBuffer>
 const readFileAsBinaryString: (file: File) => Promise<string> = readFile('readAsBinaryString') as (file: File) => Promise<string>
-const readTwxFileAsJson = async <T>(file: File): Promise<T> => (
+const readTwxFileAsJson = async <T> (file: File): Promise<T> => (
   await readFileAsBinaryString(file)
     .then(bs => pako.inflate(bs))
     .then(buf => new TextDecoder('utf-8').decode(buf))
@@ -46,14 +46,37 @@ const readTwxFileAsJson = async <T>(file: File): Promise<T> => (
       return extractJson(s1.replace(/([,{])(\d+):/g, '$1"$2":'))
     })
 )
+export const readGzipFileAsJson = async <T> (file: File): Promise<T> => (
+  await readFileAsArrayBuffer(file)
+    .then((t) => {
+      const r = new Uint8Array(t.slice(2))
+      const s = pako.ungzip(r, {
+        to: 'string'
+      })
+      return s
+      // console.log(e)
+      // const t = window.atob(e)
+      // const n = t.length
+      // const r = new Uint8Array(new ArrayBuffer(n))
+      // for (let i = 0; i < n; ++i) { r[i] = t.charCodeAt(i) }
+      // return pako.ungzip(e, {
+      //   to: 'string'
+      // })
+    })
+    .then(r => {
+      return JSON.parse(r) as T
+    })
+)
 
-export const readTwmapFileAsJson = async <T>(file: File): Promise<T> => (
+export const readTwmapFileAsJson = async <T> (file: File): Promise<T> => (
   await readFileAsText(file)
     .then((e) => {
       const t = window.atob(e)
       const n = t.length
       const r = new Uint8Array(new ArrayBuffer(n))
-      for (let i = 0; i < n; ++i) { r[i] = t.charCodeAt(i) }
+      for (let i = 0; i < n; ++i) {
+        r[i] = t.charCodeAt(i)
+      }
       return pako.ungzip(r, {
         to: 'string'
       })
