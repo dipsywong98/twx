@@ -7,7 +7,8 @@ const darkTilesetMap: Record<string, string> = {
   water1: 'water5',
   lava: 'lava1',
   tileset1: 'tileset9',
-  tileset0: 'tileset8'
+  tileset0: 'tileset8',
+  tileset7: 'tilesetA'
 }
 
 const darkWallsetMap: Record<string, string> = {
@@ -22,10 +23,10 @@ const darkObjectMap: Record<string, string> = {
   dsta1: 'dstad1',
   dsta2: 'dstad2',
   dsta3: 'dstad3',
-  dstb0: 'dstad3',
-  dstb1: 'dstad2',
-  dstb2: 'dstad1',
-  dstb3: 'dstad0'
+  dsta3a: 'dstad3a',
+  dsta2a: 'dstad2a',
+  dsta1a: 'dstad1a',
+  dsta0a: 'dstad0a'
 }
 
 function darkRenameLayers (layers: TwmLayer[]) {
@@ -61,11 +62,11 @@ function darkRenameLayers (layers: TwmLayer[]) {
 
 function darkRenameWalls (walls: Record<string, string[]>): Record<string, string[]> {
   const newMap: Record<string, string[]> = {}
-  Object.keys(walls).forEach((tileSetName) => {
-    if (tileSetName in darkWallsetMap) {
-      newMap[darkWallsetMap[tileSetName]] = walls[tileSetName]
+  Object.keys(walls).forEach((wallSetName) => {
+    if (wallSetName in darkWallsetMap) {
+      newMap[darkWallsetMap[wallSetName]] = walls[wallSetName]
     } else {
-      newMap[tileSetName] = walls[tileSetName]
+      newMap[wallSetName] = walls[wallSetName]
     }
   })
   return newMap
@@ -73,11 +74,11 @@ function darkRenameWalls (walls: Record<string, string[]>): Record<string, strin
 
 function darkRenameObjects (objects: Record<string, string[]>): Record<string, string[]> {
   const newMap: Record<string, string[]> = {}
-  Object.keys(objects).forEach((tileSetName) => {
-    if (tileSetName in darkObjectMap) {
-      newMap[darkObjectMap[tileSetName]] = objects[tileSetName]
+  Object.keys(objects).forEach((objectName) => {
+    if (objectName in darkObjectMap) {
+      newMap[darkObjectMap[objectName]] = objects[objectName]
     } else {
-      newMap[tileSetName] = objects[tileSetName]
+      newMap[objectName] = objects[objectName]
     }
   })
   return newMap
@@ -86,13 +87,13 @@ function darkRenameObjects (objects: Record<string, string[]>): Record<string, s
 export const translateTwm = (twm: Twm): unknown => {
   const twmap = emptyTwmap()
   Object.entries(twm.objs).forEach(([objectName, locations]) => {
-    if (['shadow2_n', 'shine2_n'].includes(objectName)) {
+    if (['shadow2_n', 'shine2_n', 'boxStair2'].includes(objectName)) {
       twm.objs[objectName] = locations.map(location => {
         const { x, y } = getLocation(location)
         return `${x},${Number.parseInt(y) + 1}`
       })
     }
-    if (['shadow2_w', 'shine2_w'].includes(objectName)) {
+    if (['shadow2_w', 'shine2_w', 'boxStair1'].includes(objectName)) {
       twm.objs[objectName] = locations.map(location => {
         const { x, y } = getLocation(location)
         return `${Number.parseInt(x) + 1},${y}`
