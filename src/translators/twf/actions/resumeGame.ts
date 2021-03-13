@@ -1,7 +1,7 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { withCheckFields } from '../validationError'
 
-export const resumeGame: ActionTranslator = withCheckFields([])((cgActions, action) => ([
+export const resumeGame: Translator = withCheckFields([])((cgActions, action) => ([
   ...cgActions, {
     type: 'GameResume',
     data: {

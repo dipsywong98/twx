@@ -1,3 +1,12 @@
+import { Validator } from 'react'
+import PropTypes from 'prop-types'
+
+export type Nullable<T> = T | undefined | null
+
+export const notNull = <T>(subject: Nullable<T>): subject is T => {
+  return subject !== undefined && subject !== null
+}
+
 export type Twf = TwfCommon & Record<string, TwfEvent | TwfRo>
 
 export interface TwfCommon {
@@ -257,8 +266,22 @@ export interface CgEvents {
   events: CgEvent[]
 }
 
-export type ActionTranslator = (cgActions: CgAction[], action: TwfAct) => CgAction[]
-export type CheckTranslator = (cgChecks: CgCheck[], check: TwfCheck) => CgCheck[]
-export type TriggerTranslator = (cgTriggers: CgTrigger[], check: TwfCheck) => CgTrigger[]
+// export type Translator = (cgActions: CgAction[], action: TwfAct) => CgAction[]
+// export type Translator = (cgChecks: CgCheck[], check: TwfCheck) => CgCheck[]
+// export type TriggerTranslator = (cgTriggers: CgTrigger[], check: TwfCheck) => CgTrigger[]
+//
+// export type Translator = Translator | TriggerTranslator | Translator
 
-export type Translator = CheckTranslator | TriggerTranslator | ActionTranslator
+type ValidationMap<T> = {
+  [K in keyof T]?: Validator<T[K]>
+}
+
+export interface Translator<P=any, A=CgAction|CgCheck|CgTrigger> {
+  (cgActions: A[], action: PropTypes.InferProps<P>): A[]
+  propTypes?: ValidationMap<PropTypes.InferProps<P>>
+}
+
+// export interface Translator<P> {
+//   (params: P): Record<string, string>
+//   propTypes?: WeakValidationMap<P>
+// }

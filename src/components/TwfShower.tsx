@@ -8,7 +8,7 @@ import { JsonShower } from './JsonShower'
 import { twfEventAnalysis } from '../utils/twfEventAnalysis'
 import { htmlDecode } from '../utils/htmlDecode'
 import { translateTwfEvents } from '../translators/twf/translateTwfEvents'
-import { clearMiss, getMissed } from '../translators/twf/missingStuff'
+import { clearMiss, getValidationErrors } from '../translators/twf/validationError'
 import { download } from '../utils/download'
 import { copyToClipboard } from '../utils/copyToClipboard'
 import PropTypes from 'prop-types'
@@ -48,7 +48,7 @@ export const TwfShower: FunctionComponent<{ twf: Twf }> = ({ twf }) => {
       clearMiss()
       return {
         cgEvents: translateTwfEvents(inf, ini, map, roles, events, musics),
-        missed: getMissed()
+        missed: getValidationErrors()
       }
     } catch (error: unknown) {
       return {

@@ -1,9 +1,11 @@
-import { CheckTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { PropTypes } from '../../../propTypes'
 
-export const eventOver: CheckTranslator = withCheckFields([
-  'eid' // event id
-])((cgTriggers, check) => ([...cgTriggers, {
+const propTypes = {
+  eid: PropTypes.string.isRequired
+}
+
+export const eventOver: Translator<typeof propTypes> =((cgTriggers, check) => ([...cgTriggers, {
   type: 'EventState',
   data: {
     eventId: check.eid,
@@ -15,3 +17,5 @@ export const eventOver: CheckTranslator = withCheckFields([
     _elseEventId: ''
   }
 }]))
+
+eventOver.propTypes = propTypes

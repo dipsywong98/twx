@@ -1,12 +1,14 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
 import { getLocations } from '../utils/getLocations'
+import { PropTypes, TwxPropTypes } from '../../../propTypes'
 
-export const goto: ActionTranslator = withCheckFields([
-  'c', // actor code
+const propTypes = {
+  c: PropTypes.string.isRequired, // actor code
+  lcs: TwxPropTypes.Locations.isRequired // locations
   // 'tc',  //dont know what is this
-  'lcs' // locations
-])((cgActions, action) => ([
+}
+
+export const goto: Translator<typeof propTypes> =((cgActions, action) => ([
   ...cgActions,
   {
     type: 'ActorGoto',
@@ -17,3 +19,5 @@ export const goto: ActionTranslator = withCheckFields([
     }
   }
 ]))
+
+goto.propTypes = propTypes

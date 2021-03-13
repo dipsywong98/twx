@@ -1,12 +1,10 @@
 import {
-  ActionTranslator,
   CgAction,
   CgCheck,
   CgEvent,
   CgEvents,
   CgTrigger,
-  CheckTranslator,
-  TriggerTranslator,
+  Translator,
   TwfEvent,
   TwfInf,
   TwfIni,
@@ -18,12 +16,14 @@ import { emptyCgEvents } from './emptyCgEvents'
 import * as rawActions from './actions'
 import * as rawTriggers from './triggers'
 import * as rawChecks from './checks'
-import { markMissed, MissingStuffType } from './missingStuff'
+import { addError, checkPropTypes, ValidationErrorType } from './validationError'
 import { translateConfig } from './translateConfig'
 
-const actionTranslators: Record<string, ActionTranslator> = rawActions
-const triggerTranslators: Record<string, TriggerTranslator> = rawTriggers
-const checkTranslators: Record<string, CheckTranslator> = rawChecks
+// @ts-ignore
+const actionTranslators: Record<string, Translator> = rawActions
+const triggerTranslators: Record<string, Translator<unknown, CgTrigger>> = rawTriggers
+// @ts-ignore
+const checkTranslators: Record<string, Translator> = rawChecks
 
 export const translateEvent = (eventName: string, event: TwfEvent): CgEvent => {
   return {
@@ -47,10 +47,14 @@ export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles:
     const cgEvent = translateEvent(eventName, event)
     cgEvent.actions = event.act.reduce<CgAction[]>((cgActions, act) => {
       if (act.type in actionTranslators) {
-        return actionTranslators[act.type](cgActions, act)
+        const Translator = actionTranslators[act.type]
+        if(Translator.propTypes !== undefined) {
+          checkPropTypes(Translator.propTypes, act, act.type)
+        }
+        return Translator(cgActions, act)
       } else {
-        markMissed({
-          type: MissingStuffType.ACTION_TYPE,
+        addError({
+          type: ValidationErrorType.UNKNOWN_ACTION,
           what: act.type,
           example: act
         })
@@ -65,10 +69,14 @@ export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles:
     })
     cgEvent.checks = event.cks.filter(({ type }) => !(type in triggerTranslators)).reduce<CgCheck[]>((cgChecks, check) => {
       if (check.type in checkTranslators) {
-        return checkTranslators[check.type](cgChecks, check)
+        const checkTranslator = checkTranslators[check.type]
+        if(checkTranslator.propTypes!==undefined) {
+          checkPropTypes(checkTranslator.propTypes, check, check.type)
+        }
+        return checkTranslator(cgChecks, check)
       } else {
-        markMissed({
-          type: MissingStuffType.CHECK_TYPE,
+        addError({
+          type: ValidationErrorType.UNKNOWN_CHECK,
           what: check.type,
           example: check
         })

@@ -1,9 +1,11 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { PropTypes } from '../../../propTypes'
 
-export const goFindActor: ActionTranslator = withCheckFields([
-  'c' // actor code
-])((cgActions, action) => ([
+const propTypes = {
+  c: PropTypes.string.isRequired
+}
+
+export const goFindActor: Translator<typeof propTypes> = ((cgActions, action) => ([
   ...cgActions, {
     type: 'GoFindTarget',
     data: {
@@ -15,3 +17,5 @@ export const goFindActor: ActionTranslator = withCheckFields([
     }
   }
 ]))
+
+goFindActor.propTypes = propTypes

@@ -1,15 +1,13 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { PropTypes } from '../../../propTypes'
 
-/**
- * lcs[{lc: '\d+,\d+'}]
- */
-
-export const playSound: ActionTranslator = withCheckFields([
+const propTypes = {
   // 'r', // repeat, not handled yet
   // 'rt', // repeat time, not handled yet
-  's' // what sound
-])((cgActions, action) => ([
+  's': PropTypes.string.isRequired
+}
+
+export const playSound: Translator<typeof propTypes> = ((cgActions, action) => ([
   ...cgActions,
   {
     type: 'PlaySound',
@@ -21,3 +19,5 @@ export const playSound: ActionTranslator = withCheckFields([
     }
   }
 ]))
+
+playSound.propTypes = propTypes

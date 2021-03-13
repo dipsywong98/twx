@@ -1,7 +1,7 @@
-import { CgLocation } from '../../../type'
+import { CgLocation, Nullable } from '../../../type'
 
-export const getLocations = (lcs: Array<{lc: string}>): CgLocation[] => {
-  return lcs.map(({ lc }) => {
+export const getLocations = (lcs: Nullable<Array<{lc: string}>>): CgLocation[] => {
+  return (lcs ?? []).map(({ lc }) => {
     const [x, y] = lc.split(',')
     return {
       x,

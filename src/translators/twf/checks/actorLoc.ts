@@ -1,12 +1,14 @@
-import { CheckTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
 import { getLocations } from '../utils/getLocations'
+import { PropTypes, TwxPropTypes } from '../../../propTypes'
 
-export const actorLoc: CheckTranslator = withCheckFields([
-  'c', // actor code
+const propTypes = {
+  c: PropTypes.string.isRequired, // actor code
   // 'cv',  // idk what is this
-  'lcs' // locations
-])((cgChecks, check) => [
+  lcs: TwxPropTypes.Locations.isRequired // locations
+}
+
+export const actorLoc: Translator<typeof propTypes> = ((cgChecks, check) => [
   ...cgChecks,
   {
     type: 'ActorLoc',
@@ -21,3 +23,5 @@ export const actorLoc: CheckTranslator = withCheckFields([
   }
 ]
 )
+
+actorLoc.propTypes = propTypes

@@ -1,10 +1,11 @@
-import { CheckTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { TwxPropTypes } from '../../../propTypes'
 
-// {"type":"campOver","cps":[0,1]}
-export const campOver: CheckTranslator = withCheckFields([
-  'cps' // camps
-])((cgChecks, check) => [...cgChecks,
+const propTypes = {
+  cps: TwxPropTypes.Camps.isRequired
+}
+
+export const campOver: Translator<typeof propTypes> = ((cgChecks, check) => [...cgChecks,
   {
     type: 'ActorCount',
     data: {
@@ -32,5 +33,6 @@ export const campOver: CheckTranslator = withCheckFields([
       _elseEventId: ''
     }
   }
-]
-)
+])
+
+campOver.propTypes = propTypes

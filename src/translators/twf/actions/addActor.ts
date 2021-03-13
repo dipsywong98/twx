@@ -1,74 +1,58 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
 import { getWeapon } from '../utils/getWeapon'
 import { getCamp } from '../utils/getCamp'
 import { getLocations } from '../utils/getLocations'
+import { PropTypes, TwxPropTypes } from '../../../propTypes'
 
-interface TwfAddActor {
-  v: number // vision(?
-  cp: number // camp
-  w: number // weight(?
-  w0: number // weapon
-  w1: number // weapon
-  r: number // rotation
-  pts: unknown[] // dont know
-  hp: number // hp
-  n: string
-  ro: {
-    sr: number // system role (?
-  }
-  g: number // group number
-  lcs: Array<{ lc: string }> // locations, lc in '\d+,\d+' format
-  c: string // character code
+const propTypes = {
+  v: PropTypes.number.isRequired,  // vision
+  cp: TwxPropTypes.Camp.isRequired, // camp
+  w: PropTypes.number.isRequired, // weight(?
+  w0: PropTypes.number, // weapon
+  w1: PropTypes.number, // weapon
+  r: PropTypes.number, // rotation
+  hp: PropTypes.number.isRequired, // hp
+  n: PropTypes.string.isRequired, // name
+  ro: PropTypes.shape({
+    sr: PropTypes.number // system role (?
+  }).isRequired,
+  g: PropTypes.number.isRequired, // group number
+  lcs: TwxPropTypes.Locations, // locations, lc in '\d+,\d+' format
+  c: PropTypes.string.isRequired // character code
 }
 
-export const addActor: ActionTranslator = withCheckFields([
-  'v',
-  'cp',
-  'w',
-  'w0',
-  'w1',
-  'r',
-  'pts',
-  'n',
-  'hp',
-  'ro',
-  'g',
-  'lcs',
-  'c'
-])((cgActions, action) => {
-  const a = action as unknown as TwfAddActor
-  const [{ x, y }] = getLocations(a.lcs)
+export const addActor: Translator<typeof propTypes> = ((cgActions, action) => {
+  const [{ x, y }] = getLocations(action.lcs)
   return [...cgActions, {
     type: 'AddActor',
     data: {
-      actorCode: a.c,
-      name: a.n,
+      actorCode: action.c,
+      name: action.n,
       role: {
-        dr: a.ro.sr
+        dr: action.ro.sr
       },
       weapon0: {
-        w0Type: getWeapon(a.w0)
+        w0Type: getWeapon(action.w0)
       },
       weapon1: {
-        w1Type: getWeapon(a.w1)
+        w1Type: getWeapon(action.w1)
       },
-      camp: getCamp(a.cp),
-      group: a.g?.toString() ?? '0',
+      camp: getCamp(action.cp),
+      group: action.g?.toString() ?? '0',
       location: {
         x: x,
         y: y,
         range: '0'
       },
-      rotation: a.r?.toString() ?? '0',
+      rotation: action.r?.toString() ?? '0',
       idleRotate: true,
-      maxhp: a.hp?.toString() ?? '100',
+      maxhp: action.hp?.toString() ?? '100',
       manaPower: '0',
       lives: '1',
       maxAbilityLevel: 1,
-      weight: a.w?.toString() ?? '4',
+      weight: action.w?.toString() ?? '4',
       strength: '1',
-      vision: a.v.toString() ?? '300',
+      vision: action.v.toString() ?? '300',
       range: '10000',
       score: 10,
       distractWhenHit: true,
@@ -80,3 +64,5 @@ export const addActor: ActionTranslator = withCheckFields([
     }
   }]
 })
+
+addActor.propTypes = propTypes

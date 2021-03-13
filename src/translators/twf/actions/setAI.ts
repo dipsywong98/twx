@@ -1,5 +1,5 @@
-import { ActionTranslator, TwfAct } from '../../../type'
-import { markMissed, MissingStuffType, withCheckFields } from '../missingStuff'
+import { Translator, TwfAct } from '../../../type'
+import { addError, ValidationErrorType, withCheckFields } from '../validationError'
 
 const knowTypes = ['rotation']
 
@@ -9,7 +9,7 @@ interface TwfSetAI extends TwfAct{
   c: string
 }
 
-export const setAI: ActionTranslator = withCheckFields([
+export const setAI: Translator = withCheckFields([
   'c', // actor code
   'v', // some value
   'k' // the ai what value
@@ -25,8 +25,8 @@ const factory = (action: TwfSetAI) => {
     case 'rotation':
       return buildRotation(action)
     default:
-      markMissed({
-        type: MissingStuffType.FIELD,
+      addError({
+        type: ValidationErrorType.UNKNOWN_FIELD,
         what: 'k:' + action.k,
         example: action
       })

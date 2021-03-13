@@ -1,4 +1,5 @@
-import { markMissed, MissingStuffType } from '../missingStuff'
+import { addError, ValidationErrorType } from '../validationError'
+import { notNull, Nullable } from '../../../type'
 
 const weapons: Record<string, string> = {
   1: 'knife',
@@ -52,13 +53,13 @@ const weapons: Record<string, string> = {
   // 718: '青龍'
 }
 
-export const getWeapon = (id?: string | number): string | undefined => {
-  if (id === undefined) {
+export const getWeapon = (id?: Nullable<string | number>): string | undefined => {
+  if (!notNull(id)) {
     return undefined
   }
   if (!(id.toString() in weapons)) {
-    markMissed({
-      type: MissingStuffType.WEAPON,
+    addError({
+      type: ValidationErrorType.UNKNOWN_WEAPON,
       what: id.toString()
     })
   }

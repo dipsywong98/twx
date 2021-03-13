@@ -1,9 +1,11 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { TwxPropTypes } from '../../../propTypes'
 
-export const missionComplete: ActionTranslator = withCheckFields([
-  'cps' // camps
-])((cgActions, action) => ([
+const propTypes = {
+  cps: TwxPropTypes.Camps
+}
+
+export const missionComplete: Translator<typeof propTypes> = (cgActions, action) => ([
   ...cgActions, {
     type: 'MissionComplete',
     data: {
@@ -15,13 +17,15 @@ export const missionComplete: ActionTranslator = withCheckFields([
           brain: 'all',
           camp: {
             campAll: false,
-            skydow: action.cps.includes(0),
-            royal: action.cps.includes(1),
-            third: action.cps.includes(2),
-            otherCamp: action.cps.includes(3)
+            skydow: action.cps?.includes(0) ?? false,
+            royal: action.cps?.includes(1) ?? false,
+            third: action.cps?.includes(2) ?? false,
+            otherCamp: action.cps?.includes(3) ?? false
           }
         }
       ]
     }
   }
-]))
+])
+
+missionComplete.propTypes= propTypes

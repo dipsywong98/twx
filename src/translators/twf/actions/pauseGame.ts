@@ -1,7 +1,6 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
 
-export const pauseGame: ActionTranslator = withCheckFields([])((cgActions, action) => ([
+export const pauseGame: Translator = ((cgActions, action) => ([
   ...cgActions, {
     type: 'GamePause',
     data: {

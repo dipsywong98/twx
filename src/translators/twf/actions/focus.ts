@@ -1,14 +1,12 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
 import { getLocations } from '../utils/getLocations'
+import { TwxPropTypes } from '../../../propTypes'
 
-/**
- * lcs[{lc: '\d+,\d+'}]
- */
+const propTypes = {
+  lcs: TwxPropTypes.Locations
+}
 
-export const focus: ActionTranslator = withCheckFields([
-  'lcs'
-])((cgActions, action) => ([
+export const focus: Translator<typeof propTypes> = (cgActions, action) => ([
   ...cgActions, {
     type: 'CameraFocus',
     data: {
@@ -21,4 +19,6 @@ export const focus: ActionTranslator = withCheckFields([
       }
     }
   }
-]))
+])
+
+focus.propTypes = propTypes

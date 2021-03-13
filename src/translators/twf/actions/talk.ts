@@ -1,38 +1,16 @@
-import { ActionTranslator, CgAction, TwfAct } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { PropTypes } from '../../../propTypes'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface TwfTalk extends TwfAct {
-  type: 'talk'
-  sp: string[] // what to say
-  du: number // duration
-  dy: number // delay
-  c: string // actor code
+const propTypes = {
+  sp: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired, // what to say
+  du: PropTypes.number.isRequired, // duration
+  dy: PropTypes.number.isRequired, // delay
+  c: PropTypes.string.isRequired // actor code
 }
 
-interface CGTalk extends CgAction{
-  type: string
-  data: {
-    timeout: number
-    actorCode: string
-    cleanTalk: boolean
-    speech: string
-    randSpeech?: boolean
-    speeches?: string[]
-    duration: string
-    wait: boolean
-    waitMore?: string
-  }
-}
-
-export const talk: ActionTranslator = withCheckFields([
-  'sp', // what to say
-  'du', // duration
-  'dy', // delay
-  'c' // actor code
-])((cgActions, action) => {
+export const talk: Translator<typeof propTypes> = ((cgActions, action) => {
   const [speech, ...speeches] = action.sp
-  const cgAction: CGTalk = {
+  const cgAction = {
     type: 'ActorTalkDelayed',
     data: {
       timeout: action.dy,
@@ -47,3 +25,5 @@ export const talk: ActionTranslator = withCheckFields([
   }
   return [...cgActions, cgAction]
 })
+
+talk.propTypes = propTypes

@@ -1,10 +1,12 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { PropTypes } from '../../../propTypes'
 
-export const followActor: ActionTranslator = withCheckFields([
-  'f', // c follow f
-  'c' // actor code
-])((cgActions, action) => ([
+const propTypes = {
+  f: PropTypes.string.isRequired,
+  c: PropTypes.string.isRequired
+}
+
+export const followActor: Translator<typeof propTypes> = ((cgActions, action) => ([
   ...cgActions, {
     type: 'ActorFollow',
     data: {

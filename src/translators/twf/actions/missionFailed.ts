@@ -1,7 +1,7 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { withCheckFields } from '../validationError'
 
-export const missionFailed: ActionTranslator = withCheckFields([
+export const missionFailed: Translator = withCheckFields([
 ])((cgActions, action) => ([
   ...cgActions,
   {

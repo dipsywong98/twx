@@ -1,10 +1,12 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { PropTypes } from '../../../propTypes'
 
-export const title: ActionTranslator = withCheckFields([
-  't', // text
-  's' // size
-])((cgActions, action) => ([
+const propTypes = {
+  t: PropTypes.string.isRequired, // text
+  s: PropTypes.number.isRequired// size
+}
+
+export const title: Translator<typeof propTypes> = ((cgActions, action) => ([
   ...cgActions, {
     type: 'ActionTitle',
     data: {
@@ -25,3 +27,5 @@ export const title: ActionTranslator = withCheckFields([
     }
   }
 ]))
+
+title.propTypes = propTypes

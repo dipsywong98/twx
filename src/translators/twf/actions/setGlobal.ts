@@ -1,5 +1,5 @@
-import { ActionTranslator, CgAction } from '../../../type'
-import { markMissed, MissingStuffType, withCheckFields } from '../missingStuff'
+import { CgAction, Translator } from '../../../type'
+import { addError, ValidationErrorType, withCheckFields } from '../validationError'
 
 const knownTypes = ['int', 'calc', 'randInt', 'str']
 const knownOps = ['+', '-', '*', '/', '%']
@@ -31,7 +31,7 @@ interface StrV {
   strs: string[]
 }
 
-export const setGlobal: ActionTranslator = withCheckFields([
+export const setGlobal: Translator = withCheckFields([
   'vt', // type: int|calc
   'k', // name
   // 'd',  // idk what is this
@@ -61,8 +61,8 @@ const factory = (action: TwfSetGlobal<unknown>): CgAction => {
     case 'str':
       return makeStr(action as TwfSetGlobal<StrV>)
     default:
-      markMissed({
-        type: MissingStuffType.FIELD,
+      addError({
+        type: ValidationErrorType.UNKNOWN_FIELD,
         what: 'vt:' + action.vt,
         example: action
       })
@@ -87,8 +87,8 @@ const makeInt = (action: TwfSetGlobal<IntV>): CgAction => {
 const makeCalc = (action: TwfSetGlobal<CalcV>): CgAction => {
   let value = `${wrapExpression(action.v.v0)}${action.v.op}${action.v.v1}`
   if (!knownOps.includes(action.v.op)) {
-    markMissed({
-      type: MissingStuffType.FIELD,
+    addError({
+      type: ValidationErrorType.UNKNOWN_FIELD,
       what: 'v.op' + action.v.op,
       example: action
     })

@@ -1,11 +1,12 @@
-import { ActionTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
+import { withCheckFields } from '../validationError'
+import { PropTypes } from '../../../propTypes'
 
-/**
- * lcs[{lc: '\d+,\d+'}]
- */
+const propTypes = {
+  d: PropTypes.any
+}
 
-export const eventSkipper: ActionTranslator = withCheckFields([
+export const eventSkipper: Translator = withCheckFields([
   'd' // duration, but will ignore it
 ])((cgActions, action) => ([
   {
@@ -17,3 +18,5 @@ export const eventSkipper: ActionTranslator = withCheckFields([
   },
   ...cgActions
 ]))
+
+eventSkipper.propTypes = propTypes

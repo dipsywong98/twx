@@ -1,9 +1,6 @@
-import { TriggerTranslator } from '../../../type'
-import { withCheckFields } from '../missingStuff'
+import { Translator } from '../../../type'
 
-export const placeholder: TriggerTranslator = withCheckFields([
-  'eid' // event id
-])((cgTriggers, check) => ([...cgTriggers, {
+export const placeholder: Translator = ((cgTriggers, check) => ([...cgTriggers, {
   type: 'EventState',
   data: {
     eventId: check.eid,
