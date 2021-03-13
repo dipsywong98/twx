@@ -1,46 +1,55 @@
 import { CgAction, Translator } from '../../../type'
-import { addError, ValidationErrorType, withCheckFields } from '../validationError'
+import { addError, ValidationErrorType } from '../validationError'
+import { PropTypes } from '../../../propTypes'
 
-const knownTypes = ['int', 'calc', 'randInt', 'str']
 const knownOps = ['+', '-', '*', '/', '%']
-const knownRound = ['ceil', 'floor']
+const knownRounds = ['ceil', 'floor']
+const knownTypes = ['int', 'calc', 'randInt', 'str']
 
-interface TwfSetGlobal<T extends IntV | CalcV | RandV | StrV | unknown> {
+const StringOrNumber = PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.number.isRequired])
+const Operator = PropTypes.oneOf(knownOps)
+const Round = PropTypes.oneOf(knownRounds)
+const IntVPropType = {
+  v: StringOrNumber.isRequired
+}
+const CalcVPropType = {
+  v0: StringOrNumber.isRequired,
+  v1: StringOrNumber.isRequired,
+  op: Operator.isRequired,
+  ni: Round
+}
+const RandVPropType = {
+  v0: StringOrNumber.isRequired,
+  v1: StringOrNumber.isRequired,
+}
+const StrVPropType = {
+  strs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+}
+const propTypes = {
+  vt: PropTypes.oneOf(knownTypes).isRequired,
+  k: PropTypes.string.isRequired,
+  v: PropTypes.oneOfType([
+    IntVPropType,
+    CalcVPropType,
+    RandVPropType,
+    StrVPropType
+  ].map(v => PropTypes.shape(v)))
+}
+
+type IntV = PropTypes.InferProps<typeof IntVPropType>
+type CalcV = PropTypes.InferProps<typeof CalcVPropType>
+type RandV = PropTypes.InferProps<typeof RandVPropType>
+type StrV = PropTypes.InferProps<typeof StrVPropType>
+interface TwfSetGlobal<T> {
   vt: typeof knownTypes[number]
   k: string
   v: T
 }
-
-interface IntV {
-  v: number | string
-}
-
-interface CalcV {
-  v0: number | string
-  v1: number | string
-  op: typeof knownOps[number]
-  ni?: typeof knownRound[number]
-}
-
-interface RandV {
-  v0: number | string
-  v1: number | string
-}
-
-interface StrV {
-  strs: string[]
-}
-
-export const setGlobal: Translator = withCheckFields([
-  'vt', // type: int|calc
-  'k', // name
-  // 'd',  // idk what is this
-  'v'
-
-])((cgActions, action) => ([
+export const setGlobal: Translator<typeof propTypes> = ((cgActions, action) => ([
   ...cgActions,
   factory(action as unknown as TwfSetGlobal<unknown>)
 ]))
+setGlobal.propTypes = propTypes
 
 const wrapExpression = (expression: number | string): string => {
   if (typeof expression === 'string') {

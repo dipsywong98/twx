@@ -48,9 +48,7 @@ export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles:
     cgEvent.actions = event.act.reduce<CgAction[]>((cgActions, act) => {
       if (act.type in actionTranslators) {
         const Translator = actionTranslators[act.type]
-        if(Translator.propTypes !== undefined) {
-          checkPropTypes(Translator.propTypes, act, act.type)
-        }
+        checkPropTypes(Translator.propTypes ?? {}, act, act.type)
         return Translator(cgActions, act)
       } else {
         addError({
@@ -70,9 +68,7 @@ export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles:
     cgEvent.checks = event.cks.filter(({ type }) => !(type in triggerTranslators)).reduce<CgCheck[]>((cgChecks, check) => {
       if (check.type in checkTranslators) {
         const checkTranslator = checkTranslators[check.type]
-        if(checkTranslator.propTypes!==undefined) {
-          checkPropTypes(checkTranslator.propTypes, check, check.type)
-        }
+        checkPropTypes(checkTranslator.propTypes ?? {}, check, check.type)
         return checkTranslator(cgChecks, check)
       } else {
         addError({

@@ -1,7 +1,6 @@
-import { Translator, TwfAct, TwfCheck } from '../../type'
 import { WeakValidationMap } from 'react'
 
-var loggedTypeFailures = {}
+let loggedTypeFailures: Record<string, boolean> = {}
 
 export enum ValidationErrorType {
   UNKNOWN_ACTION = 'Unknown Action Type',
@@ -23,47 +22,28 @@ export interface ValidationError {
 const missStore: ValidationError[] = []
 
 export const clearMiss = (): void => {
+  loggedTypeFailures = {}
   missStore.splice(0, missStore.length)
 }
 
 export const addError = (miss: ValidationError): void => {
-  if (missStore.findIndex(({ type, what, where }) => type === miss.type && what === miss.what && where === miss.where) === -1) {
+  if (missStore.findIndex(({
+                             type,
+                             what,
+                             where
+                           }) => type === miss.type && what === miss.what && where === miss.where) === -1) {
     missStore.push(miss)
   }
 }
 
-export const checkMissed = (knownFields: string[], target: TwfCheck&TwfAct): void => {
-  Object.keys(target).forEach(k => {
-    if (!knownFields.includes(k) && k !== 'type') {
-      addError({
-        type: ValidationErrorType.UNKNOWN_FIELD,
-        what: k,
-        where: target.type,
-        example: target
-      })
-    }
-  })
-}
-
-export const withCheckFields = <T>(knownFields: string[]) => (translator: Translator<T>): Translator<T> => {
-  return (cgStuffs, twfStuff) => {
-    checkMissed(knownFields, twfStuff as unknown as TwfAct)
-    return translator(cgStuffs, twfStuff)
-  }
-}
-
-
 const printWarning = function (text: string) {
+  if (text in loggedTypeFailures) {
+    return
+  }
+  loggedTypeFailures[text] = true
   var message = 'Warning: ' + text
   if (typeof console !== 'undefined') {
-    console.error(message)
-  }
-  try {
-    // --- Welcome to debugging React ---
-    // This error was thrown as a convenience so that you can use this stack
-    // to find the callsite that caused this warning to fire.
-    throw new Error(message)
-  } catch (x) {
+    console.log(`%c${ message }`, 'color: red;')
   }
 }
 
@@ -71,8 +51,13 @@ export function checkPropTypes (typeSpecs: WeakValidationMap<Record<string, unkn
   const missings: ValidationError[] = []
   for (let valueKey in values) {
     if (!typeSpecs.hasOwnProperty(valueKey) && valueKey !== 'type') {
+      printWarning(`Failed ${name}: unknown field ${valueKey} in ${name}`)
       addError({
-        example: values, message: 'unknown attribute', type: ValidationErrorType.UNKNOWN_FIELD, what: valueKey, where: name
+        example: values,
+        message: 'unknown attribute',
+        type: ValidationErrorType.UNKNOWN_FIELD,
+        what: valueKey,
+        where: name
       })
     }
   }
@@ -89,7 +74,7 @@ export function checkPropTypes (typeSpecs: WeakValidationMap<Record<string, unkn
           throw err
         }
         // @ts-ignore
-        error = typeSpecs[typeSpecName]?.(values, typeSpecName, name, 'attribute',null, 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED')
+        error = typeSpecs[typeSpecName]?.(values, typeSpecName, name, 'attribute', null, 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED')
       } catch (ex) {
         error = ex
       }
@@ -105,19 +90,15 @@ export function checkPropTypes (typeSpecs: WeakValidationMap<Record<string, unkn
       }
       if (error instanceof Error) {
         addError({
-          example: values, message: error.message, type: ValidationErrorType.WRONG_FIELD_TYPE, what: typeSpecName, where: name
-
+          example: values,
+          message: error.message,
+          type: ValidationErrorType.WRONG_FIELD_TYPE,
+          what: typeSpecName,
+          where: name
         })
-        if(!(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          // @ts-ignore
-          loggedTypeFailures[error.message] = true
-
-          printWarning(
-            'Failed ' + name + ' type: ' + error.message
-          )
-        }
+        printWarning(
+          'Failed ' + name + ' type: ' + error.message
+        )
       }
     }
   }

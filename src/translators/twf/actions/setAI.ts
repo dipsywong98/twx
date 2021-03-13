@@ -1,24 +1,25 @@
-import { Translator, TwfAct } from '../../../type'
-import { addError, ValidationErrorType, withCheckFields } from '../validationError'
+import { Translator } from '../../../type'
+import { addError, ValidationErrorType } from '../validationError'
+import { PropTypes } from '../../../propTypes'
 
 const knowTypes = ['rotation']
 
-interface TwfSetAI extends TwfAct{
-  k: typeof knowTypes[number]
-  v: any
-  c: string
+const propTypes = {
+  k: PropTypes.oneOf(knowTypes).isRequired,
+  v: PropTypes.any.isRequired,
+  c: PropTypes.string.isRequired
 }
 
-export const setAI: Translator = withCheckFields([
-  'c', // actor code
-  'v', // some value
-  'k' // the ai what value
-])((cgActions, action) => {
+type TwfSetAI = PropTypes.InferProps<typeof propTypes>
+
+export const setAI: Translator<typeof propTypes> = ((cgActions, action) => {
   return ([
     ...cgActions,
-    factory(action as unknown as TwfSetAI)
+    factory(action as TwfSetAI)
   ])
 })
+
+setAI.propTypes = propTypes
 
 const factory = (action: TwfSetAI) => {
   switch (action.k) {

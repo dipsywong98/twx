@@ -1,14 +1,11 @@
 import { Translator } from '../../../type'
-import { withCheckFields } from '../validationError'
 import { PropTypes } from '../../../propTypes'
 
 const propTypes = {
   d: PropTypes.any
 }
 
-export const eventSkipper: Translator = withCheckFields([
-  'd' // duration, but will ignore it
-])((cgActions, action) => ([
+export const eventSkipper: Translator = ((cgActions, action) => ([
   {
     type: 'SkipEvent',
     data: {
