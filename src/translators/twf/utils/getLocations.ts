@@ -1,6 +1,6 @@
 import { CgLocation, Nullable } from '../../../type'
 
-export const getLocations = (lcs: Nullable<Array<{lc: string}>>): CgLocation[] => {
+export const getLocations = (lcs: Nullable<Array<{ lc: string }>>): CgLocation[] => {
   return (lcs ?? []).map(({ lc }) => {
     const [x, y] = lc.split(',')
     return {
@@ -11,7 +11,22 @@ export const getLocations = (lcs: Nullable<Array<{lc: string}>>): CgLocation[] =
   })
 }
 
-export const getLocation = (coordString: string | undefined, defaultVal: CgLocation = { x: '0', y: '0' }): CgLocation => {
+export const getLocationsAlt = (lcs: Nullable<Array<{ lc: string }>>): CgLocation[] => {
+  return (lcs ?? []).map(({ lc }) => {
+    const [x, y] = lc.split(',')
+    return {
+      targetType: 'location',
+      x,
+      y,
+      range: '0'
+    }
+  })
+}
+
+export const getLocation = (coordString: string | undefined, defaultVal: CgLocation = {
+  x: '0',
+  y: '0'
+}): CgLocation => {
   if (coordString === undefined) {
     return defaultVal
   }

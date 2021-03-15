@@ -1,5 +1,6 @@
 import { Translator } from '../../../type'
 import { TwxPropTypes } from '../../../propTypes'
+import { processCamps } from '../utils/getCamp'
 
 const propTypes = {
   cps: TwxPropTypes.Camps.isRequired
@@ -15,13 +16,7 @@ export const campOver: Translator<typeof propTypes> = ((cgChecks, check) => [...
           actorCodes: [],
           excludeActorCodes: [],
           brain: 'all',
-          camp: {
-            campAll: false,
-            skydow: check.cps.includes(0),
-            royal: check.cps.includes(1),
-            third: check.cps.includes(2),
-            otherCamp: check.cps.includes(3)
-          }
+          camp: processCamps(check.cps)
         }
       ],
       varname: 'count',

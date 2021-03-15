@@ -1,8 +1,9 @@
 import { Translator } from '../../../type'
 import { addError, ValidationErrorType } from '../validationError'
 import { PropTypes } from '../../../propTypes'
+import { processCode } from '../utils/processCdoe'
 
-const knowTypes = ['rotation']
+const knowTypes = ['rotation', 'maxHp']
 
 const propTypes = {
   k: PropTypes.oneOf(knowTypes).isRequired,
@@ -25,6 +26,8 @@ const factory = (action: TwfSetAI) => {
   switch (action.k) {
     case 'rotation':
       return buildRotation(action)
+    case 'maxHp':
+      return buildMaxHp(action)
     default:
       addError({
         type: ValidationErrorType.UNKNOWN_FIELD,
@@ -41,8 +44,21 @@ const factory = (action: TwfSetAI) => {
 const buildRotation = (action: TwfSetAI) => ({
   type: 'ActorFacing',
   data: {
-    actorCode: action.c,
+    actorCode: processCode(action.c),
     targetType: 'degree',
     degree: action.v.toString()
+  }
+})
+
+
+const buildMaxHp = (action: TwfSetAI) => ({
+  type: 'ActorAttributes',
+  data: {
+    actorCode: processCode(action.c),
+    ops: [{
+      attr: 'maxHp',
+      operation: 'set',
+      value: action.v
+    }]
   }
 })

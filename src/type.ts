@@ -206,6 +206,13 @@ export interface CgLocation {
   range?: string
 }
 
+export interface CgRegion {
+  x: string
+  y: string
+  w: string
+  h: string
+}
+
 export interface CgTwilightWarsConfig {
   title: string
   serverConfig: {

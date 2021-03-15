@@ -1,5 +1,6 @@
 import { Translator } from '../../../type'
 import { PropTypes } from '../../../propTypes'
+import { processCode } from '../utils/processCdoe'
 
 const propTypes = {
   sp: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired, // what to say
@@ -14,7 +15,7 @@ export const talk: Translator<typeof propTypes> = ((cgActions, action) => {
     type: 'ActorTalkDelayed',
     data: {
       timeout: action.dy,
-      actorCode: action.c,
+      actorCode: processCode(action.c),
       speech,
       cleanTalk: true,
       randSpeech: speeches.length > 0,

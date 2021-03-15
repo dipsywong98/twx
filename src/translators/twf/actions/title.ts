@@ -3,7 +3,9 @@ import { PropTypes } from '../../../propTypes'
 
 const propTypes = {
   t: PropTypes.string.isRequired, // text
-  s: PropTypes.number.isRequired// size
+  s: PropTypes.number.isRequired, // size
+  du: PropTypes.number, // duration
+  sy: PropTypes.number  // displacement y
 }
 
 export const title: Translator<typeof propTypes> = ((cgActions, action) => ([
@@ -18,8 +20,8 @@ export const title: Translator<typeof propTypes> = ((cgActions, action) => ([
       strokeThickness: 4,
       direction: 'rtol',
       shiftX: 0,
-      shiftY: -60,
-      duration: '2600',
+      shiftY: action.sy ?? -60,
+      duration: action.du?.toString() ?? '2600',
       delay: '0',
       fadeinDuration: '300',
       fadeoutDuration: '300',

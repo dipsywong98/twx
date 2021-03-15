@@ -3,6 +3,7 @@ import { getWeapon } from '../utils/getWeapon'
 import { getCamp } from '../utils/getCamp'
 import { getLocations } from '../utils/getLocations'
 import { PropTypes, TwxPropTypes } from '../../../propTypes'
+import { processCode } from '../utils/processCdoe'
 
 const propTypes = {
   v: PropTypes.number.isRequired,  // vision
@@ -18,7 +19,9 @@ const propTypes = {
   }).isRequired,
   g: PropTypes.number.isRequired, // group number
   lcs: TwxPropTypes.Locations, // locations, lc in '\d+,\d+' format
-  c: PropTypes.string.isRequired // character code
+  c: PropTypes.string.isRequired, // character code
+  rg: PropTypes.number,
+  vn: PropTypes.string
 }
 
 export const addActor: Translator<typeof propTypes> = ((cgActions, action) => {
@@ -53,14 +56,14 @@ export const addActor: Translator<typeof propTypes> = ((cgActions, action) => {
       weight: action.w?.toString() ?? '4',
       strength: '1',
       vision: action.v.toString() ?? '300',
-      range: '10000',
+      range: action.rg?.toString() ?? '10000',
       score: 10,
       distractWhenHit: true,
       bornDelayDuration: '0',
       bornDuration: '1000',
       bornLockDuration: '1000',
       localVarname: 'actor',
-      globalVarname: ''
+      globalVarname: processCode(action.vn)
     }
   }]
 })

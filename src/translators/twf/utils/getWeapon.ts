@@ -2,6 +2,7 @@ import { addError, ValidationErrorType } from '../validationError'
 import { notNull, Nullable } from '../../../type'
 
 const weapons: Record<string, string> = {
+  0: 'magazine',
   1: 'knife',
   2: 'hook',
   3: 'sword',

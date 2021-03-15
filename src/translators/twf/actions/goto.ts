@@ -1,6 +1,7 @@
 import { Translator } from '../../../type'
 import { getLocations } from '../utils/getLocations'
 import { PropTypes, TwxPropTypes } from '../../../propTypes'
+import { processCode } from '../utils/processCdoe'
 
 const propTypes = {
   c: PropTypes.string.isRequired, // actor code
@@ -13,7 +14,7 @@ export const goto: Translator<typeof propTypes> =((cgActions, action) => ([
   {
     type: 'ActorGoto',
     data: {
-      actorCode: action.c,
+      actorCode: processCode(action.c),
       targetType: 'locs',
       locs: getLocations(action.lcs)
     }

@@ -1,3 +1,5 @@
 export * from './campOver'
 export * from './eventOver'
 export * from './actorLoc'
+export * from './numPlayers'
+export * from './actorRegion'

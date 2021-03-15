@@ -79,13 +79,13 @@ export const translateTwfEvents = (inf: TwfInf, ini: TwfIni, map: TwfMap, roles:
         return [...cgChecks, { type: 'placeholderCheck', data: check }]
       }
     }, [])
-    cgEvent.triggers = event.cks.filter(({ type }) => !(type in checkTranslators)).reduce<CgTrigger[]>((cgTriggers, check) => {
-      if (check.type in triggerTranslators) {
-        return triggerTranslators[check.type](cgTriggers, check)
-      } else {
-        return [...cgTriggers, { type: 'placeholderTrigger', data: check }]
-      }
-    }, [])
+    // cgEvent.triggers = event.cks.filter(({ type }) => !(type in checkTranslators)).reduce<CgTrigger[]>((cgTriggers, check) => {
+    //   if (check.type in triggerTranslators) {
+    //     return triggerTranslators[check.type](cgTriggers, check)
+    //   } else {
+    //     return [...cgTriggers, { type: 'placeholderTrigger', data: check }]
+    //   }
+    // }, [])
     return cgEvent
   })
   return cgEvents
