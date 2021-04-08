@@ -15,6 +15,7 @@ enum FileType {
   TWMAP,
   UNKNOWN,
   TWR,
+  TWROLE,
 }
 
 export const ReadStuffPage: FunctionComponent = () => {
@@ -73,6 +74,14 @@ export const ReadStuffPage: FunctionComponent = () => {
           setError(e.message ?? e.name ?? e as unknown as string)
         })
       setFileType(FileType.TWR)
+    } else if (ext === 'twrole') {
+      readGzipFileAsJson(file)
+        .then(setFileContentJson)
+        .catch((e: Error) => {
+          console.error(e)
+          setError(e.message ?? e.name ?? e as unknown as string)
+        })
+      setFileType(FileType.TWROLE)
     } else {
       setFileType(FileType.UNKNOWN)
       // readTwmapFileAsJson(file)
@@ -131,7 +140,7 @@ export const ReadStuffPage: FunctionComponent = () => {
         {fileContentJson !== null && fileType === FileType.TWM && <TwmShower twm={fileContentJson} name={name}/>}
         {fileContentJson !== null && fileType === FileType.TWMAP &&
         <TwmShower twm={fileContentJson} name={name}/>}
-        {fileContentJson !== null && fileType === FileType.TWR &&
+        {fileContentJson !== null && (fileType === FileType.TWR || fileType === FileType.TWROLE) &&
         <TwrShower twr={fileContentJson as Twr} name={name}/>}
         {fileContentJson !== null && fileType === FileType.UNKNOWN &&
         <ClickShowRaw raw={fileContentJson} name={name} defaultShow={1}/>}

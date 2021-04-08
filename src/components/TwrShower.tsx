@@ -11,9 +11,14 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
   const [showHead, setShowHead] = useState(true)
   const [showHands, setShowHands] = useState(true)
   const [showFoot, setShowFoot] = useState(true)
-  const ref = useTwrRender(twr, showHead, showHands, showFoot)
+  const [showCape, setShowCape] = useState(true)
+  const ref = useTwrRender(twr, showHead, showHands, showFoot, showCape)
   const twrole = useMemo(() => {
-    return twrToTwrole(twr)
+    if ('data' in twr) {
+      return twr
+    } else {
+      return twrToTwrole(twr)
+    }
   }, [twr])
   const handleDownload = (): void => {
     if (ref.current !== null) {
@@ -54,6 +59,12 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
             <label>
               <Checkbox checked={showFoot} onChange={({ target }) => setShowFoot(target.checked)}/>
               showFoot
+            </label>
+          </Box>
+          <Box>
+            <label>
+              <Checkbox checked={showCape} onChange={({ target }) => setShowCape(target.checked)}/>
+              showCape
             </label>
           </Box>
           <Box>
