@@ -1,9 +1,9 @@
-class TwrRender {
+class TwroleRender {
+  url = 'https://dipsy.me/gaf-player'
   actorGaf = null
   decoGaf = null
   initP = null
   initDone = false
-  url = 'https://dipsy.me/gaf-player'
   loadGaf = async name => {
     return new Promise(resolve => {
       function onConverted(pEvent) {
@@ -27,7 +27,7 @@ class TwrRender {
   constructor() {
     this.initP = this.init().then(() => console.log('done'))
   }
-  render = async (pixiApp, twrJson, showHead, showHands, showFoot) => {
+  render = async (pixiApp, twroleJson, showHead, showHands, showFoot, showCape) => {
     if(!this.initDone) {
       pixiApp.stage.addChild(new PIXI.Text('loading'))
       await this.initP
@@ -47,26 +47,28 @@ class TwrRender {
       gafMovieClip.y = y
       gafMovieClip.scale.x = sx
       gafMovieClip.scale.y = sy
-      gafMovieClip.rotation = r * Math.PI / 180
+      gafMovieClip.rotation = r //* Math.PI / 180
       container.addChild(gafMovieClip)
       return gafMovieClip
     }
 
-    const {head, hand, foot, decos} = twrJson
+    const {data: { cr: { head, hand, foot, deco, cape } }} = twroleJson
 
-    showHands && renderItem('twactor', 'lib_actor_hand', hand, 10, 20, 1, -1, 0)
-    showHands && renderItem('twactor', 'lib_actor_hand', hand, 10, -20, 1, 1, 0)
-    showFoot && renderItem('twactor', 'lib_actor_foot', foot, 8, -8, 1, 1, -90)
-    showFoot && renderItem('twactor', 'lib_actor_foot', foot, 8, 8, 1, -1, 90)
-    if(!decos.find(({code}) => code === '_head_')) {
-      showHead && renderItem('twactor', 'lib_actor_head', head, 0, 0, 1, 1, 0)
+    showHands && renderItem('twactor', 'lib_actor_hand', hand.f, 10, 20, 1, -1, 0)
+    showHands && renderItem('twactor', 'lib_actor_hand', hand.f, 10, -20, 1, 1, 0)
+    showFoot && renderItem('twactor', 'lib_actor_foot', foot.f, 8, -8, 1, 1, -90)
+    showFoot && renderItem('twactor', 'lib_actor_foot', foot.f, 8, 8, 1, -1, 90)
+    showCape && renderItem('twactor', 'lib_actor_cape', cape.f, 0, 0, 1, 1, 0)
+    if(!deco.find(({code, c}) => code === '_head_' || c === 'head')) {
+      showHead && renderItem('twactor', 'lib_actor_head', head.f, 0, 0, 1, 1, 0)
     }
-    decos.forEach(({ code, x, y, sx, sy, r }) => {
-      if(code === '_head_') {
-        showHead && renderItem('twactor', 'lib_actor_head', head, x, y, sx, sy, r)
+    deco.forEach(({ code, x, y, sx, sy, r, c }) => {
+      code = code || c
+      if(code === '_head_' || c === 'head') {
+        showHead && renderItem('twactor', 'lib_actor_head', head.f, x, y, sx, sy, r)
       }else{
         try {
-          renderItem('decorations', code, 1, x, y, sx, sy, r)
+          renderItem('decorations', code, 1, x, y, sx*2, sy*2, r)
         } catch (e) {
           console.log(e)
         }
@@ -75,4 +77,4 @@ class TwrRender {
   }
 }
 
-window.twrRender = new TwrRender()
+window.twroleRender = new TwroleRender()
