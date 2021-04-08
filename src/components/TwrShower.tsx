@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useMemo, useState } from 'react'
 import { Box, Button, Checkbox, Typography } from '@material-ui/core'
 import { ClickShowRaw } from './ClickShowRaw'
-import { Twr } from '../type'
+import { Twr, Twrole } from '../type'
 import { useTwrRender } from '../hooks/useTwrRender'
 import { downloadAsBlob, downloadDataUrl } from '../utils/download'
 import PropTypes from 'prop-types'
@@ -12,14 +12,19 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
   const [showHands, setShowHands] = useState(true)
   const [showFoot, setShowFoot] = useState(true)
   const [showCape, setShowCape] = useState(true)
+  const [camp, setCamp] = useState(0)
+  const [sex, setSex] = useState(0)
   const ref = useTwrRender(twr, showHead, showHands, showFoot, showCape)
   const twrole = useMemo(() => {
+    const twrole: Twrole = 'data' in twr ? twr : twrToTwrole(twr)
     if ('data' in twr) {
-      return twr
+      setCamp(twrole.data.dr & 0b11110)
+      setSex(twrole.data.dr & 0b1)
     } else {
-      return twrToTwrole(twr)
+      twrole.data.dr = sex | camp
     }
-  }, [twr])
+    return twrole
+  }, [twr, camp, sex])
   const handleDownload = (): void => {
     if (ref.current !== null) {
       downloadDataUrl(ref.current?.toDataURL('image/png;base64'), `${name}.png`)
@@ -66,6 +71,20 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
               <Checkbox checked={showCape} onChange={({ target }) => setShowCape(target.checked)}/>
               showCape
             </label>
+          </Box>
+          <Box>
+            <select value={camp} onChange={({ target }) => setCamp(Number.parseInt(target.value))}>
+              <option value={0b10}>skydow</option>
+              <option value={0b100}>royal</option>
+              <option value={0b1000}>third</option>
+              <option value={0b10000}>unknown</option>
+            </select>
+          </Box>
+          <Box>
+            <select value={sex} onChange={({ target }) => setSex(Number.parseInt(target.value))}>
+              <option value={0b0}>male</option>
+              <option value={0b1}>female</option>
+            </select>
           </Box>
           <Box>
             <Button onClick={handleDownload} variant='contained' color='primary'>
