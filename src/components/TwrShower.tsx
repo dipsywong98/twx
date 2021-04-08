@@ -7,6 +7,15 @@ import { downloadAsBlob, downloadDataUrl } from '../utils/download'
 import PropTypes from 'prop-types'
 import { twrToTwrole } from '../translators/twrToTwrole'
 
+enum CampSexFlags {
+  MALE = 0,
+  FEMALE = 1,
+  SKYDOW = 2,
+  ROYAL = 4,
+  THIRD = 8,
+  UNKNOWN = 16
+}
+
 export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, name }) => {
   const [showHead, setShowHead] = useState(true)
   const [showHands, setShowHands] = useState(true)
@@ -15,12 +24,34 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
   const [camp, setCamp] = useState(0)
   const [sex, setSex] = useState(0)
   const ref = useTwrRender(twr, showHead, showHands, showFoot, showCape)
+  const guessCamp = (twrole: Twrole): CampSexFlags => {
+    const samples = twrole.data.cr.deco.map(({ c }) => c.split('_')[0]).filter((str, index, arr) => ['skydow', 'royal', 'third'].includes(str) && arr.indexOf(str) === index)
+    if (samples.length !== 1) {
+      return CampSexFlags.UNKNOWN
+    }
+    switch (samples[0]) {
+      case 'skydow':
+        return CampSexFlags.SKYDOW
+      case 'royal':
+        return CampSexFlags.ROYAL
+      case 'third':
+        return CampSexFlags.THIRD
+      default:
+        return CampSexFlags.UNKNOWN
+    }
+  }
   const twrole = useMemo(() => {
     const twrole: Twrole = 'data' in twr ? twr : twrToTwrole(twr)
+    const guessedCamp = guessCamp(twrole)
     if ('data' in twr) {
-      setCamp(twrole.data.dr & 0b11110)
-      setSex(twrole.data.dr & 0b1)
+      if ((guessedCamp & CampSexFlags.UNKNOWN) > 0) {
+        setCamp(guessedCamp)
+      } else {
+        setCamp(twrole.data.dr & (CampSexFlags.SKYDOW | CampSexFlags.ROYAL | CampSexFlags.THIRD))
+      }
+      setSex(twrole.data.dr & CampSexFlags.MALE)
     } else {
+      setCamp(guessedCamp)
       twrole.data.dr = sex | camp
     }
     return twrole
@@ -74,16 +105,16 @@ export const TwrShower: FunctionComponent<{ twr: Twr, name: string }> = ({ twr, 
           </Box>
           <Box>
             <select value={camp} onChange={({ target }) => setCamp(Number.parseInt(target.value))}>
-              <option value={0b10}>skydow</option>
-              <option value={0b100}>royal</option>
-              <option value={0b1000}>third</option>
-              <option value={0b10000}>unknown</option>
+              <option value={CampSexFlags.SKYDOW}>skydow</option>
+              <option value={CampSexFlags.ROYAL}>royal</option>
+              <option value={CampSexFlags.THIRD}>third</option>
+              <option value={CampSexFlags.UNKNOWN}>unknown</option>
             </select>
           </Box>
           <Box>
             <select value={sex} onChange={({ target }) => setSex(Number.parseInt(target.value))}>
-              <option value={0b0}>male</option>
-              <option value={0b1}>female</option>
+              <option value={CampSexFlags.MALE}>male</option>
+              <option value={CampSexFlags.FEMALE}>female</option>
             </select>
           </Box>
           <Box>
